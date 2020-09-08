@@ -1,0 +1,9 @@
+[submodule "src"]
+	path = src
+	url = https://github.com/raizenpk/Ess3D.git
+[submodule "Ess3D"]
+	path = Ess3D
+	url = https://github.com/raizenpk/Ess3D.git
+[submodule "lib/Ess3D"]
+	path = lib/Ess3D
+	url = https://github.com/raizenpk/Ess3D.git
