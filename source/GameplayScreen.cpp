@@ -19,7 +19,10 @@ int GameplayScreen::getPreviousScreenIndex() const {
 }
 
 void GameplayScreen::onEntry() {
+  //Set to true to keep mouse in center always - this will work with getCursorDeltaPosition
   SDL_SetRelativeMouseMode(SDL_TRUE);
+  //Set to true to show mouse cursor over screen
+  //SDL_ShowCursor(SDL_TRUE);
 }
 
 void GameplayScreen::onExit() {
@@ -88,6 +91,28 @@ void GameplayScreen::processInput(float deltaTime) {
   if(inputManager->isKeyDown(SDLK_ESCAPE)) {
     _currentState = Ess3D::ScreenState::EXIT_APPLICATION;
   }
+
+  glm::vec2 direction = glm::vec2(0.0f);
+  float velocity = 0.2f;
+
+  if (inputManager->hasMouseMoved()) {
+      direction += glm::normalize(inputManager->getCursorDeltaPosition()) * glm::vec2(1.0f, -1.0f);
+  }
+
+  if (inputManager->isKeyDown(SDLK_UP)) {
+      direction += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_DOWN)) {
+      direction += glm::vec2(0.0f, -1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_LEFT)) {
+      direction += glm::vec2(-1.0f, 0.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_RIGHT)) {
+      direction += glm::vec2(1.0f, 0.0f);
+  }
+
+  _ball->setVelocity(direction * velocity);
 }
 
 SceneRenderer *GameplayScreen::getSceneRendered() {

@@ -14,12 +14,14 @@ class Ball {
 
     void draw();
     bool update(float deltaTime);
+    void setVelocity(glm::vec2& velocity);
 
   protected:
     float _width{};
     float _height{};
 
     glm::vec2 _position;
+    glm::vec2 _velocity;
     GLuint _textureId{};
     glm::vec4 _uv;
     Ess3D::ColorRGBA8 _color;

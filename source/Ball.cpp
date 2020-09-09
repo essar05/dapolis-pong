@@ -20,5 +20,12 @@ void Ball::draw() {
 }
 
 bool Ball::update(float deltaTime) {
+  _position += _velocity;
+
   return true;
+}
+
+void Ball::setVelocity(glm::vec2& velocity)
+{
+	_velocity = velocity;
 }

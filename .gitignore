@@ -17,3 +17,5 @@
 /build/Release/CEGUI.log
 /cmake-build-debug
 out
+Debug/vs-dapong.vcxprojAssemblyReference.cache
+Debug/vs-dapong.log
