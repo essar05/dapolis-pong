@@ -99,8 +99,8 @@ void GameplayScreen::processInput(float deltaTime) {
 
   glm::vec2 direction = glm::vec2(0.0f);
   glm::vec2 cameraDirection = glm::vec2(0.f);
-  float velocity = 1.f;
-  float cameraVelocity = 1.f;
+  float velocity = 30.f;
+  float cameraVelocity = 30.f;
 
   if (inputManager->hasMouseMoved()) {
     glm::vec2 cursorDeltaPosition = inputManager->getCursorDeltaPosition();
