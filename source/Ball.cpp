@@ -15,7 +15,6 @@ Ball::Ball(int textureId, const glm::vec4& uv, float width, float height, const 
 Ball::~Ball() = default;
 
 void Ball::draw() {
-  //
   Ess3D::SpriteBatch* spriteBatch = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getSpriteBatch();
   spriteBatch->draw(glm::vec4(_interpolatedPosition.x - _width / 2, _interpolatedPosition.y - _height / 2, _width, _height), _uv, _textureId, _color, 9000.0f, 0.0f);
 }
