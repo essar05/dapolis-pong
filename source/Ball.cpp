@@ -3,7 +3,7 @@
 
 Ball::Ball() = default;
 
-Ball::Ball(int textureId, glm::vec4 uv, float width, float height, glm::vec2 position) {
+Ball::Ball(int textureId, const glm::vec4& uv, float width, float height, const glm::vec2& position) {
   _color = Ess3D::ColorRGBA8(225, 255, 255, 255);
   _width = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getCamera()->getWorldScalar(width);
   _height = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getCamera()->getWorldScalar(height);
@@ -16,7 +16,7 @@ Ball::~Ball() = default;
 
 void Ball::draw() {
   Ess3D::SpriteBatch* spriteBatch = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getSpriteBatch();
-  spriteBatch->draw(glm::vec4(_drawPosition.x - _width / 2, _drawPosition.y - _height / 2, _width, _height), _uv, _textureId, _color, 9000.0f, 0.0f);
+  spriteBatch->draw(glm::vec4(_interpolatedPosition.x - _width / 2, _interpolatedPosition.y - _height / 2, _width, _height), _uv, _textureId, _color, 9000.0f, 0.0f);
 }
 
 bool Ball::update(float deltaTime) {
@@ -32,7 +32,7 @@ void Ball::setVelocity(const glm::vec2& velocity) {
 void Ball::smoothStates(float timestepAccumulatorRatio) {
   float oneMinusRatio = 1.0f - timestepAccumulatorRatio;
 
-  this->_drawPosition = timestepAccumulatorRatio * _position +
+  this->_interpolatedPosition = timestepAccumulatorRatio * _position +
       oneMinusRatio * _previousPosition;
 }
 

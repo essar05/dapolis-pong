@@ -9,7 +9,7 @@
 class Ball {
   public:
     Ball();
-    Ball(int textureId, glm::vec4 uv, float width, float height, glm::vec2 position);
+    Ball(int textureId, const glm::vec4& uv, float width, float height, const glm::vec2& position);
     ~Ball();
 
     void draw();
@@ -25,8 +25,12 @@ class Ball {
 
     glm::vec2 _previousPosition;
     glm::vec2 _position;
-    glm::vec2 _drawPosition;
+    // only used for rendering
+    glm::vec2 _interpolatedPosition;
+
     glm::vec2 _velocity;
+
+    // render information
     GLuint _textureId{};
     glm::vec4 _uv;
     Ess3D::ColorRGBA8 _color;
