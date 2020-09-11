@@ -22,12 +22,9 @@ SceneRenderer::SceneRenderer(float _width, float _height) {
 
   _camera = new Ess3D::Camera2D();
 
-  _camera->init((int) this->_width, (int) this->_height);
-  _camera->setScale(32.0f);
+  _camera->init((int) this->_width, (int) this->_height, 50.f);
   _camera->setZoom(1.0f);
-  glm::vec2 initialCameraPosition = _camera->getWorldCoordinates(glm::vec2(this->_width / 2, this->_height / 2));
-  _camera->setPosition(initialCameraPosition);
-  _camera->setFuturePosition(initialCameraPosition);
+  _camera->setPosition(glm::vec2(0.0f, 0.0f));
 
   _spriteBatch = new Ess3D::SpriteBatch();
   _spriteBatch->init();

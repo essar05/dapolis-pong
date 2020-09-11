@@ -41,7 +41,7 @@ void GameplayScreen::build() {
   Ess3D::TextureAtlas* atlas = _textureCache->getAtlas("Textures/atlas.png", "Textures/atlas.json");
 
   Ess3D::Camera2D* camera = _sceneRenderer->getCamera();
-  _ball = new Ball(atlas->getTexture()->getId(), atlas->getUV("cluster_bomb"), 30.0f, 30.0f, glm::vec2(camera->getViewportSize().x / 2, camera->getViewportSize().y / 2));
+  _ball = new Ball(atlas->getTexture()->getId(), atlas->getUV("cluster_bomb"), 1.0f, 1.0f, glm::vec2(0.f, 0.f));
 }
 
 void GameplayScreen::destroy() {
@@ -71,11 +71,16 @@ void GameplayScreen::draw() {
 void GameplayScreen::update(float deltaTime, int simulationSteps) {
   for(int i = 0; i < simulationSteps; i++) {
     processInput(deltaTime);
+
+    _ball->resetSmoothStates();
+    _sceneRenderer->getCamera()->resetSmoothState();
+
+    _ball->update(deltaTime);
   }
 
-  _ball->update(deltaTime);
-
   _sceneRenderer->getCamera()->smoothState(_game->getTimestepAccumulator()->getAccumulatorRatio(), false);
+  _ball->smoothStates(_game->getTimestepAccumulator()->getAccumulatorRatio());
+
   _sceneRenderer->getCamera()->update();
 }
 
@@ -83,7 +88,7 @@ void GameplayScreen::processInput(float deltaTime) {
   SDL_Event event;
   Ess3D::InputManager* inputManager = _game->getInputManager();
 
-  inputManager->setHasMouseMoved(false);
+  inputManager->reset();
   while(SDL_PollEvent(&event) != 0) {
     _game->onSDLEvent(event);
   }
@@ -93,25 +98,35 @@ void GameplayScreen::processInput(float deltaTime) {
   }
 
   glm::vec2 direction = glm::vec2(0.0f);
-  float velocity = 0.2f;
+  glm::vec2 cameraDirection = glm::vec2(0.f);
+  float velocity = 1.f;
+  float cameraVelocity = 1.f;
 
   if (inputManager->hasMouseMoved()) {
-      direction += glm::normalize(inputManager->getCursorDeltaPosition()) * glm::vec2(1.0f, -1.0f);
+    glm::vec2 cursorDeltaPosition = inputManager->getCursorDeltaPosition();
+
+    if (glm::length(cursorDeltaPosition) > 0) {
+      cursorDeltaPosition = glm::normalize(cursorDeltaPosition);
+
+      direction += cursorDeltaPosition;
+      direction.y = -direction.y;
+    }
   }
 
   if (inputManager->isKeyDown(SDLK_UP)) {
-      direction += glm::vec2(0.0f, 1.0f);
+    cameraDirection += glm::vec2(0.0f, 1.0f);
   }
   if (inputManager->isKeyDown(SDLK_DOWN)) {
-      direction += glm::vec2(0.0f, -1.0f);
+    cameraDirection += glm::vec2(0.0f, -1.0f);
   }
   if (inputManager->isKeyDown(SDLK_LEFT)) {
-      direction += glm::vec2(-1.0f, 0.0f);
+    cameraDirection += glm::vec2(-1.0f, 0.0f);
   }
   if (inputManager->isKeyDown(SDLK_RIGHT)) {
-      direction += glm::vec2(1.0f, 0.0f);
+    cameraDirection += glm::vec2(1.0f, 0.0f);
   }
 
+  _sceneRenderer->getCamera()->setPosition(_sceneRenderer->getCamera()->getPosition() + cameraDirection * cameraVelocity);
   _ball->setVelocity(direction * velocity);
 }
 

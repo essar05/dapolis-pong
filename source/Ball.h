@@ -14,13 +14,18 @@ class Ball {
 
     void draw();
     bool update(float deltaTime);
-    void setVelocity(glm::vec2& velocity);
+    void setVelocity(const glm::vec2& velocity);
+
+    void smoothStates(float timestepAccumulatorRatio);
+    void resetSmoothStates();
 
   protected:
     float _width{};
     float _height{};
 
+    glm::vec2 _previousPosition;
     glm::vec2 _position;
+    glm::vec2 _drawPosition;
     glm::vec2 _velocity;
     GLuint _textureId{};
     glm::vec4 _uv;

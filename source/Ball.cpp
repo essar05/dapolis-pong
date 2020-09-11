@@ -16,16 +16,26 @@ Ball::~Ball() = default;
 
 void Ball::draw() {
   Ess3D::SpriteBatch* spriteBatch = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getSpriteBatch();
-  spriteBatch->draw(glm::vec4(_position.x - _width / 2, _position.y - _height / 2, _width, _height), _uv, _textureId, _color, 9000.0f, 0.0f);
+  spriteBatch->draw(glm::vec4(_drawPosition.x - _width / 2, _drawPosition.y - _height / 2, _width, _height), _uv, _textureId, _color, 9000.0f, 0.0f);
 }
 
 bool Ball::update(float deltaTime) {
-  _position += _velocity;
+  _position += _velocity * deltaTime;
 
   return true;
 }
 
-void Ball::setVelocity(glm::vec2& velocity)
-{
+void Ball::setVelocity(const glm::vec2& velocity) {
 	_velocity = velocity;
+}
+
+void Ball::smoothStates(float timestepAccumulatorRatio) {
+  float oneMinusRatio = 1.0f - timestepAccumulatorRatio;
+
+  this->_drawPosition = timestepAccumulatorRatio * _position +
+      oneMinusRatio * _previousPosition;
+}
+
+void Ball::resetSmoothStates() {
+  _previousPosition = _position;
 }
