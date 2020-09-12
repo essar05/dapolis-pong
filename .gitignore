@@ -19,3 +19,10 @@
 out
 Debug/vs-dapong.vcxprojAssemblyReference.cache
 Debug/vs-dapong.log
+/build/Debug/pong.exp
+/build/Debug/pong.lib
+/build/Release/pong.exe
+/build/Release/pong.exe.manifest
+/cmake-build-debugncp/
+/cmake-build-release/
+/Release/

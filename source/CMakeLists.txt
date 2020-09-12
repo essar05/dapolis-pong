@@ -9,7 +9,7 @@ set(Header_Files
     "GameplayScreen.h"
     "SceneRenderer.h"
     "ScreenIndices.h"
-    "Ball.h"
+    "model/Ball.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -18,14 +18,14 @@ set(Source_Files
     "Game.cpp"
     "GameplayScreen.cpp"
     "SceneRenderer.cpp"
-    "Ball.cpp"
+    "model/Ball.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${no_group_source_files}
     ${Header_Files}
-    ${Source_Files})
+    ${Source_Files} model/Entity.cpp model/Entity.h)
 
 ################################################################################
 # Target
@@ -90,7 +90,8 @@ if(MSVC)
             /O2;
             /Oi;
             /MD;
-            /Gy
+            /Gy;
+            /utf-8
         >
         /sdl;
         /W3;
@@ -113,9 +114,9 @@ if(MSVC)
         >
         $<$<CONFIG:Release>:
             /SUBSYSTEM:WINDOWS;
-        /OPT:REF;
-        /OPT:ICF;
-        /INCREMENTAL:NO
+            /OPT:REF;
+            /OPT:ICF;
+            /INCREMENTAL:NO
         >
         )
 endif ()
@@ -126,7 +127,7 @@ endif ()
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll ${OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.pdb ${OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll>" ${OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/Ess3D/resources/shaders/ ${OUTPUT_DIRECTORY}/Shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources/ ${OUTPUT_DIRECTORY}
 )
