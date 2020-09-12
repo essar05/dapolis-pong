@@ -8,7 +8,7 @@ GameplayScreen::GameplayScreen() {
   _screenIndex = SCREEN_INDEX_GAMEPLAY;
 }
 
-GameplayScreen::~GameplayScreen() {}
+GameplayScreen::~GameplayScreen() = default;
 
 int GameplayScreen::getNextScreenIndex() const {
   return SCREEN_INDEX_NO_SCREEN;
@@ -25,23 +25,22 @@ void GameplayScreen::onEntry() {
   //SDL_ShowCursor(SDL_TRUE);
 }
 
-void GameplayScreen::onExit() {
-  
-}
+void GameplayScreen::onExit() {}
 
 void GameplayScreen::build() {
-  srand(time(NULL));
-
   _fboRenderer = new Ess3D::FBORenderer();
   _fboRenderer->initShader();
   _sceneFBO = new Ess3D::FrameBufferObject(_game->getWindow(), (GLsizei) _game->getWidth(), (GLsizei) _game->getHeight(), Ess3D::DepthBufferType::TEXTURE);
   _sceneRenderer = new SceneRenderer(_game->getWidth(), _game->getHeight());
 
-
   Ess3D::TextureAtlas* atlas = _textureCache->getAtlas("Textures/atlas.png", "Textures/atlas.json");
 
-  Ess3D::Camera2D* camera = _sceneRenderer->getCamera();
-  _ball = new Ball(atlas->getTexture()->getId(), atlas->getUV("cluster_bomb"), 1.0f, 1.0f, glm::vec2(0.f, 0.f));
+  _ball = new Ball(
+    glm::vec2(0.f, 0.f),
+    glm::vec2(1.f, 1.f),
+    atlas->getTexture()->getId(),
+    atlas->getUV("cluster_bomb")
+  );
 }
 
 void GameplayScreen::destroy() {
@@ -72,14 +71,14 @@ void GameplayScreen::update(float deltaTime, int simulationSteps) {
   for(int i = 0; i < simulationSteps; i++) {
     processInput(deltaTime);
 
-    _ball->resetSmoothStates();
+    _ball->resetInterpolation();
     _sceneRenderer->getCamera()->resetSmoothState();
 
     _ball->update(deltaTime);
   }
 
   _sceneRenderer->getCamera()->smoothState(_game->getTimestepAccumulator()->getAccumulatorRatio(), false);
-  _ball->smoothStates(_game->getTimestepAccumulator()->getAccumulatorRatio());
+  _ball->interpolate(_game->getTimestepAccumulator()->getAccumulatorRatio());
 
   _sceneRenderer->getCamera()->update();
 }

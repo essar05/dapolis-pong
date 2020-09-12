@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ScreenIndices.h"
 #include "SceneRenderer.h"
-#include "Ball.h"
+#include "model/Ball.h"
 
 class Game;
 
@@ -33,13 +33,13 @@ class GameplayScreen : public Ess3D::IGameScreen {
     void processInput(float deltaTime);
     
     Game* _game = nullptr;
-    SceneRenderer* _sceneRenderer;
-    Ball* _ball;
+    SceneRenderer* _sceneRenderer{};
+    Ball* _ball{};
 
     Ess3D::TextureCache* _textureCache;
 
-    Ess3D::FrameBufferObject* _sceneFBO;
-    Ess3D::FBORenderer* _fboRenderer;
+    Ess3D::FrameBufferObject* _sceneFBO{};
+    Ess3D::FBORenderer* _fboRenderer{};
 
 };
 
