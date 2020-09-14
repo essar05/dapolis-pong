@@ -7,6 +7,7 @@
 #include "ScreenIndices.h"
 #include "SceneRenderer.h"
 #include "model/Ball.h"
+#include "model/Paddle.h"
 
 class Game;
 
@@ -20,6 +21,8 @@ class GameplayScreen : public Ess3D::IGameScreen {
 
     SceneRenderer* getSceneRendered();
     Ball* getBall();
+    Paddle* getPaddleLeft();
+    Paddle* getPaddleRight();
 
     void build() override;
     void destroy() override;
@@ -35,6 +38,8 @@ class GameplayScreen : public Ess3D::IGameScreen {
     Game* _game = nullptr;
     SceneRenderer* _sceneRenderer{};
     Ball* _ball{};
+    Paddle* _paddleLeft{};
+    Paddle* _paddleRight{};
 
     Ess3D::TextureCache* _textureCache;
 

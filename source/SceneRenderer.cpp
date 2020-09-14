@@ -62,6 +62,8 @@ void SceneRenderer::render() {
 
   // render the scene
   game->getGameplayScreen()->getBall()->draw();
+  game->getGameplayScreen()->getPaddleLeft()->draw();
+  game->getGameplayScreen()->getPaddleRight()->draw();
 
   _spriteBatch->end();
   _spriteBatch->render();

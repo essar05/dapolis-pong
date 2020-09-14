@@ -10,6 +10,7 @@ set(Header_Files
     "SceneRenderer.h"
     "ScreenIndices.h"
     "model/Ball.h"
+    "model/Paddle.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -19,6 +20,7 @@ set(Source_Files
     "GameplayScreen.cpp"
     "SceneRenderer.cpp"
     "model/Ball.cpp"
+    "model/Paddle.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
