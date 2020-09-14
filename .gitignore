@@ -26,3 +26,10 @@ Debug/vs-dapong.log
 /cmake-build-debugncp/
 /cmake-build-release/
 /Release/
+x64/Debug/vs-dapong.tlog
+UpgradeLog.htm
+x64/Debug/vs-dapong.log
+x64/Debug/vc142.idb
+x64/Debug/vc142.pdb
+*.log
+x64/Debug/vs-dapong.vcxproj.FileListAbsolute.txt

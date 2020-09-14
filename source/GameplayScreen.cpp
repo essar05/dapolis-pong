@@ -41,6 +41,22 @@ void GameplayScreen::build() {
     atlas->getTexture()->getId(),
     atlas->getUV("cluster_bomb")
   );
+
+  _paddleLeft = new Paddle(
+      //TODO FIX : HARDCODED - must be screen width dependent
+      glm::vec2(-22.f, 0.f),
+      glm::vec2(1.f, 8.f),
+      atlas->getTexture()->getId(),
+      atlas->getUV("paddle_red")
+  );
+
+  _paddleRight = new Paddle(
+      //TODO FIX : HARDCODED - must be screen width dependent
+      glm::vec2(22.f, 0.f),
+      glm::vec2(1.f, 8.f),
+      atlas->getTexture()->getId(),
+      atlas->getUV("paddle_black")
+  );
 }
 
 void GameplayScreen::destroy() {
@@ -72,13 +88,19 @@ void GameplayScreen::update(float deltaTime, int simulationSteps) {
     processInput(deltaTime);
 
     _ball->resetInterpolation();
+    _paddleLeft->resetInterpolation();
+    _paddleRight->resetInterpolation();
     _sceneRenderer->getCamera()->resetSmoothState();
 
     _ball->update(deltaTime);
+    _paddleLeft->update(deltaTime);
+    _paddleRight->update(deltaTime);
   }
 
   _sceneRenderer->getCamera()->smoothState(_game->getTimestepAccumulator()->getAccumulatorRatio(), false);
   _ball->interpolate(_game->getTimestepAccumulator()->getAccumulatorRatio());
+  _paddleLeft->interpolate(_game->getTimestepAccumulator()->getAccumulatorRatio());
+  _paddleRight->interpolate(_game->getTimestepAccumulator()->getAccumulatorRatio());
 
   _sceneRenderer->getCamera()->update();
 }
@@ -96,10 +118,15 @@ void GameplayScreen::processInput(float deltaTime) {
     _currentState = Ess3D::ScreenState::EXIT_APPLICATION;
   }
 
-  glm::vec2 direction = glm::vec2(0.0f);
+  glm::vec2 ballDirection = glm::vec2(0.0f);
   glm::vec2 cameraDirection = glm::vec2(0.f);
-  float velocity = 30.f;
-  float cameraVelocity = 30.f;
+  glm::vec2 paddleLeftDirection = glm::vec2(0.f);
+  glm::vec2 paddleRightDirection = glm::vec2(0.f);
+
+  float ballVelocity = 30.f;
+  float cameraVelocity = 0.1f;
+  float paddleLeftVelocity = 20.f;
+  float paddleRightVelocity = 20.f;
 
   if (inputManager->hasMouseMoved()) {
     glm::vec2 cursorDeltaPosition = inputManager->getCursorDeltaPosition();
@@ -107,8 +134,8 @@ void GameplayScreen::processInput(float deltaTime) {
     if (glm::length(cursorDeltaPosition) > 0) {
       cursorDeltaPosition = glm::normalize(cursorDeltaPosition);
 
-      direction += cursorDeltaPosition;
-      direction.y = -direction.y;
+      ballDirection += cursorDeltaPosition;
+      ballDirection.y = -ballDirection.y;
     }
   }
 
@@ -125,8 +152,26 @@ void GameplayScreen::processInput(float deltaTime) {
     cameraDirection += glm::vec2(1.0f, 0.0f);
   }
 
+  //Controls for paddleLeft
+  if (inputManager->isKeyDown(SDLK_w)) {
+      paddleLeftDirection += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_s)) {
+      paddleLeftDirection += glm::vec2(0.0f, -1.0f);
+  }
+  
+  //Controls for paddleRight
+  if (inputManager->isKeyDown(SDLK_o)) {
+      paddleRightDirection += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_l)) {
+      paddleRightDirection += glm::vec2(0.0f, -1.0f);
+  }
+
   _sceneRenderer->getCamera()->setPosition(_sceneRenderer->getCamera()->getPosition() + cameraDirection * cameraVelocity);
-  _ball->setVelocity(direction * velocity);
+  _ball->setVelocity(ballDirection * ballVelocity);
+  _paddleLeft->setVelocity(paddleLeftDirection * paddleLeftVelocity);
+  _paddleRight->setVelocity(paddleRightDirection * paddleRightVelocity);
 }
 
 SceneRenderer *GameplayScreen::getSceneRendered() {
@@ -135,4 +180,12 @@ SceneRenderer *GameplayScreen::getSceneRendered() {
 
 Ball *GameplayScreen::getBall() {
   return this->_ball;
+}
+
+Paddle* GameplayScreen::getPaddleLeft() {
+    return this->_paddleLeft;
+}
+
+Paddle* GameplayScreen::getPaddleRight() {
+    return this->_paddleRight;
 }
