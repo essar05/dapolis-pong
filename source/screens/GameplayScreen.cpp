@@ -122,8 +122,8 @@ void GameplayScreen::processInput(float deltaTime) {
   _scene->getCamera()->setPosition(_scene->getCamera()->getPosition() + cameraDirection * cameraVelocity);
   _scene->getBall()->setVelocity(ballDirection * ballVelocity);
 
-//  _paddleLeft->setVelocity(paddleLeftDirection * paddleLeftVelocity);
-//  _paddleRight->setVelocity(paddleRightDirection * paddleRightVelocity);
+  _scene->getPaddleLeft()->setVelocity(paddleLeftDirection * paddleLeftVelocity);
+  _scene->getPaddleRight()->setVelocity(paddleRightDirection * paddleRightVelocity);
 }
 
 SceneRenderer *GameplayScreen::getSceneRenderer() {

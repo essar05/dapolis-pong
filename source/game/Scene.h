@@ -3,6 +3,7 @@
 
 #include <Ess3D/2d/Scene2D.h>
 #include "../models/Ball.h"
+#include "../models/Paddle.h"
 
 class Scene : public Ess3D::Scene2D {
   public:
@@ -17,9 +18,13 @@ class Scene : public Ess3D::Scene2D {
     void resetInterpolation() override;
 
     Ball* getBall();
+    Paddle* getPaddleLeft();
+    Paddle* getPaddleRight();
 
   protected:
     Ball* _ball{};
+    Paddle* _paddleLeft{};
+    Paddle* _paddleRight{};
 
 };
 
