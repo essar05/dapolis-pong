@@ -10,8 +10,8 @@ SceneRenderer::SceneRenderer(float _width, float _height) {
 
   _baseShader2D = new Ess3D::Shader(true);
 
-  _baseShader2D->loadShader(Ess3D::ShaderType::VERTEX, "Shaders/2D.vs");
-  _baseShader2D->loadShader(Ess3D::ShaderType::FRAGMENT, "Shaders/2D.fs");
+  _baseShader2D->loadShader(Ess3D::ShaderType::VERTEX, "shaders/2D.vs");
+  _baseShader2D->loadShader(Ess3D::ShaderType::FRAGMENT, "shaders/2D.fs");
   _baseShader2D->compileShaders();
 
   _baseShader2D->addAttribute("vertexPosition");

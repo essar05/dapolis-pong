@@ -3,10 +3,10 @@
 #include <Ess3D/core/IGameScreen.h>
 #include <Ess3D/gl/FBORenderer.h>
 #include <Ess3D/resources/TextureCache.h>
-#include "Game.h"
+#include "../Game.h"
 #include "ScreenIndices.h"
-#include "SceneRenderer.h"
-#include "model/Ball.h"
+#include "../SceneRenderer.h"
+#include "../model/Ball.h"
 
 class Game;
 

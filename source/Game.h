@@ -6,7 +6,7 @@
 #include <iostream>
 #include <rapidjson.h>
 #include <document.h>
-#include "GameplayScreen.h"
+#include "screens/GameplayScreen.h"
 #include <Ess3D/core/IGame.h>
 #include <Ess3D/audio/AudioManager.h>
 

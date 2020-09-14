@@ -33,7 +33,7 @@ void GameplayScreen::build() {
   _sceneFBO = new Ess3D::FrameBufferObject(_game->getWindow(), (GLsizei) _game->getWidth(), (GLsizei) _game->getHeight(), Ess3D::DepthBufferType::TEXTURE);
   _sceneRenderer = new SceneRenderer(_game->getWidth(), _game->getHeight());
 
-  Ess3D::TextureAtlas* atlas = _textureCache->getAtlas("Textures/atlas.png", "Textures/atlas.json");
+  Ess3D::TextureAtlas* atlas = _textureCache->getAtlas("textures/atlas.png", "textures/atlas.json");
 
   _ball = new Ball(
     glm::vec2(0.f, 0.f),
