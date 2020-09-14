@@ -69,10 +69,15 @@ void GameplayScreen::processInput(float deltaTime) {
     _currentState = Ess3D::ScreenState::EXIT_APPLICATION;
   }
 
-  glm::vec2 direction = glm::vec2(0.0f);
+  glm::vec2 ballDirection = glm::vec2(0.0f);
   glm::vec2 cameraDirection = glm::vec2(0.f);
-  float velocity = 30.f;
-  float cameraVelocity = 30.f;
+  glm::vec2 paddleLeftDirection = glm::vec2(0.f);
+  glm::vec2 paddleRightDirection = glm::vec2(0.f);
+
+  float ballVelocity = 30.f;
+  float cameraVelocity = 0.1f;
+  float paddleLeftVelocity = 20.f;
+  float paddleRightVelocity = 20.f;
 
   if (inputManager->hasMouseMoved()) {
     glm::vec2 cursorDeltaPosition = inputManager->getCursorDeltaPosition();
@@ -80,8 +85,8 @@ void GameplayScreen::processInput(float deltaTime) {
     if (glm::length(cursorDeltaPosition) > 0) {
       cursorDeltaPosition = glm::normalize(cursorDeltaPosition);
 
-      direction += cursorDeltaPosition;
-      direction.y = -direction.y;
+      ballDirection += cursorDeltaPosition;
+      ballDirection.y = -ballDirection.y;
     }
   }
 
@@ -98,8 +103,27 @@ void GameplayScreen::processInput(float deltaTime) {
     cameraDirection += glm::vec2(1.0f, 0.0f);
   }
 
+  //Controls for paddleLeft
+  if (inputManager->isKeyDown(SDLK_w)) {
+      paddleLeftDirection += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_s)) {
+      paddleLeftDirection += glm::vec2(0.0f, -1.0f);
+  }
+
+  //Controls for paddleRight
+  if (inputManager->isKeyDown(SDLK_o)) {
+      paddleRightDirection += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_l)) {
+      paddleRightDirection += glm::vec2(0.0f, -1.0f);
+  }
+
   _scene->getCamera()->setPosition(_scene->getCamera()->getPosition() + cameraDirection * cameraVelocity);
-  _scene->getBall()->setVelocity(direction * velocity);
+  _scene->getBall()->setVelocity(ballDirection * ballVelocity);
+
+//  _paddleLeft->setVelocity(paddleLeftDirection * paddleLeftVelocity);
+//  _paddleRight->setVelocity(paddleRightDirection * paddleRightVelocity);
 }
 
 SceneRenderer *GameplayScreen::getSceneRenderer() {
