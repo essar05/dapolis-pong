@@ -1,13 +1,13 @@
 #pragma once
 
 #include <Ess3D/core/IGameScreen.h>
-#include <Ess3D/gl/FBORenderer.h>
-#include <Ess3D/resources/TextureCache.h>
-#include "Game.h"
+#include <Ess3D/core/Config.h>
+#include <Ess3D/core/State.h>
+#include "../Game.h"
 #include "ScreenIndices.h"
-#include "SceneRenderer.h"
-#include "model/Ball.h"
-#include "model/Paddle.h"
+#include "../rendering/SceneRenderer.h"
+#include "../game/Scene.h"
+#include "../models/Ball.h"
 
 class Game;
 
@@ -19,10 +19,7 @@ class GameplayScreen : public Ess3D::IGameScreen {
     int getNextScreenIndex() const override;
     int getPreviousScreenIndex() const override;
 
-    SceneRenderer* getSceneRendered();
-    Ball* getBall();
-    Paddle* getPaddleLeft();
-    Paddle* getPaddleRight();
+    SceneRenderer* getSceneRenderer();
 
     void build() override;
     void destroy() override;
@@ -34,17 +31,14 @@ class GameplayScreen : public Ess3D::IGameScreen {
     
   private:
     void processInput(float deltaTime);
-    
+
     Game* _game = nullptr;
+
+    Ess3D::Config* _config;
+    Ess3D::State* _state;
+
     SceneRenderer* _sceneRenderer{};
-    Ball* _ball{};
-    Paddle* _paddleLeft{};
-    Paddle* _paddleRight{};
-
-    Ess3D::TextureCache* _textureCache;
-
-    Ess3D::FrameBufferObject* _sceneFBO{};
-    Ess3D::FBORenderer* _fboRenderer{};
+    Scene* _scene{};
 
 };
 

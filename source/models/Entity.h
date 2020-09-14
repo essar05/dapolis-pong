@@ -8,7 +8,7 @@ class Entity : public Ess3D::Object2D {
     Entity();
     Entity(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv);
 
-    void draw() override;
+    void draw(Ess3D::Renderer2D* renderer2D) override;
     bool update(float deltaTime) override;
 
     void interpolate(float timestepAccumulatorRatio) override;

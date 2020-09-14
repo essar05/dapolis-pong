@@ -4,11 +4,8 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <iostream>
-#include <rapidjson.h>
-#include <document.h>
-#include "GameplayScreen.h"
+#include "screens/GameplayScreen.h"
 #include <Ess3D/core/IGame.h>
-#include <Ess3D/audio/AudioManager.h>
 
 class GameplayScreen;
 
@@ -21,18 +18,12 @@ class Game : public Ess3D::IGame {
     virtual void onInit() override;
     virtual void onExit() override;
 
-    Ess3D::AudioManager* getAudioManager();
     GameplayScreen* getGameplayScreen();
 
   protected:
     Game();
+
     virtual void onUpdate() override;
-    void loadConfig();
-
-    float _volume = 1.0f;
-	  bool _isConfigEnabled;
-
-    Ess3D::AudioManager _audioManager;
 
   private:
     static Game* instance;

@@ -6,9 +6,8 @@ Entity::Entity() = default;
 Entity::Entity(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv) :
   Object2D(position, size, textureId, uv) {}
 
-void Entity::draw() {
-  Ess3D::SpriteBatch* spriteBatch = Game::GetInstance()->getGameplayScreen()->getSceneRendered()->getSpriteBatch();
-  spriteBatch->draw(
+void Entity::draw(Ess3D::Renderer2D* renderer2D) {
+  renderer2D->draw(
     glm::vec4(_interpolatedPosition.x - _size.x / 2, _interpolatedPosition.y - _size.y / 2, _size.x, _size.y),
     _uv, _textureId, _color, 9000.0f, 0.0f
   );
