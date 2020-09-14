@@ -1,10 +1,11 @@
 #include "GameplayScreen.h"
 #include <SDL_events.h>
-#include <Ess3D/resources/TextureAtlas.h>
 
 GameplayScreen::GameplayScreen() {
   _game = Game::GetInstance();
-  _textureCache = Ess3D::TextureCache::getInstance();
+  _config = Ess3D::Config::get();
+  _state = Ess3D::State::get();
+
   _screenIndex = SCREEN_INDEX_GAMEPLAY;
 }
 
@@ -28,64 +29,36 @@ void GameplayScreen::onEntry() {
 void GameplayScreen::onExit() {}
 
 void GameplayScreen::build() {
-  _fboRenderer = new Ess3D::FBORenderer();
-  _fboRenderer->initShader();
-  _sceneFBO = new Ess3D::FrameBufferObject(_game->getWindow(), (GLsizei) _game->getWidth(), (GLsizei) _game->getHeight(), Ess3D::DepthBufferType::TEXTURE);
-  _sceneRenderer = new SceneRenderer(_game->getWidth(), _game->getHeight());
-
-  Ess3D::TextureAtlas* atlas = _textureCache->getAtlas("textures/atlas.png", "textures/atlas.json");
-
-  _ball = new Ball(
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    atlas->getTexture()->getId(),
-    atlas->getUV("cluster_bomb")
-  );
+  _scene = new Scene();
+  _sceneRenderer = new SceneRenderer();
 }
 
 void GameplayScreen::destroy() {
-  delete _fboRenderer;
-  delete _sceneFBO;
+  delete _scene;
   delete _sceneRenderer;
 }
 
 void GameplayScreen::draw() {
-  glClearDepth(1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glEnable(GL_BLEND);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  //bind FBO, all rendering will be done to this FBO's color buffer
-  _sceneFBO->bind();
-  
-  //render scene
-  _sceneRenderer->render();
-
-  //unbind FBO, rendering will now be done to screen
-  _sceneFBO->unbind();
-
-  _fboRenderer->render(_sceneFBO);
+  _sceneRenderer->render(_scene);
 }
 
 void GameplayScreen::update(float deltaTime, int simulationSteps) {
   for(int i = 0; i < simulationSteps; i++) {
     processInput(deltaTime);
 
-    _ball->resetInterpolation();
-    _sceneRenderer->getCamera()->resetSmoothState();
+    _scene->resetInterpolation();
 
-    _ball->update(deltaTime);
+    _scene->update(deltaTime);
   }
 
-  _sceneRenderer->getCamera()->smoothState(_game->getTimestepAccumulator()->getAccumulatorRatio(), false);
-  _ball->interpolate(_game->getTimestepAccumulator()->getAccumulatorRatio());
-
-  _sceneRenderer->getCamera()->update();
+  _scene->interpolate(_state->getTimestepAccumulator()->getAccumulatorRatio());
 }
 
 void GameplayScreen::processInput(float deltaTime) {
+  //TODO: Improve input handling (per scene / per object)
+
   SDL_Event event;
-  Ess3D::InputManager* inputManager = _game->getInputManager();
+  Ess3D::InputManager* inputManager = _state->getInputManager();
 
   inputManager->reset();
   while(SDL_PollEvent(&event) != 0) {
@@ -125,14 +98,10 @@ void GameplayScreen::processInput(float deltaTime) {
     cameraDirection += glm::vec2(1.0f, 0.0f);
   }
 
-  _sceneRenderer->getCamera()->setPosition(_sceneRenderer->getCamera()->getPosition() + cameraDirection * cameraVelocity);
-  _ball->setVelocity(direction * velocity);
+  _scene->getCamera()->setPosition(_scene->getCamera()->getPosition() + cameraDirection * cameraVelocity);
+  _scene->getBall()->setVelocity(direction * velocity);
 }
 
-SceneRenderer *GameplayScreen::getSceneRendered() {
+SceneRenderer *GameplayScreen::getSceneRenderer() {
   return this->_sceneRenderer;
-}
-
-Ball *GameplayScreen::getBall() {
-  return this->_ball;
 }

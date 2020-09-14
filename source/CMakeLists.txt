@@ -7,7 +7,7 @@ project(pong CXX)
 set(Header_Files
     "Game.h"
     "screens/GameplayScreen.h"
-    "SceneRenderer.h"
+    "rendering/SceneRenderer.h"
     "screens/ScreenIndices.h"
     "models/Ball.h"
 )
@@ -17,7 +17,7 @@ set(Source_Files
     "Bootstrap.cpp"
     "Game.cpp"
     "screens/GameplayScreen.cpp"
-    "SceneRenderer.cpp"
+    "rendering/SceneRenderer.cpp"
     "models/Ball.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
@@ -25,7 +25,11 @@ source_group("Source Files" FILES ${Source_Files})
 set(ALL_FILES
     ${no_group_source_files}
     ${Header_Files}
-    ${Source_Files} models/Entity.cpp models/Entity.h World.cpp World.h)
+    ${Source_Files}
+    models/Entity.cpp models/Entity.h
+    game/World.cpp game/World.h
+    game/Scene.cpp game/Scene.h
+    )
 
 ################################################################################
 # Target
