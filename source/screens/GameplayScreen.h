@@ -34,8 +34,6 @@ class GameplayScreen : public Ess3D::IGameScreen {
     void onExit() override;
     
   private:
-    void processInput(float deltaTime);
-
     Game* _game = nullptr;
 
     Ess3D::Config* _config;
