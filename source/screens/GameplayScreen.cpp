@@ -38,92 +38,22 @@ void GameplayScreen::destroy() {
   delete _sceneRenderer;
 }
 
-void GameplayScreen::draw() {
-  _sceneRenderer->render(_scene);
+void GameplayScreen::step(float deltaTime) {
+  _scene->update(deltaTime);
 }
 
-void GameplayScreen::update(float deltaTime, int simulationSteps) {
-  for(int i = 0; i < simulationSteps; i++) {
-    processInput(deltaTime);
+void GameplayScreen::update() {}
 
-    _scene->resetInterpolation();
-
-    _scene->update(deltaTime);
-  }
-
-  _scene->interpolate(_state->getTimestepAccumulator()->getAccumulatorRatio());
-}
-
-void GameplayScreen::processInput(float deltaTime) {
-  //TODO: Improve input handling (per scene / per object)
-
-  SDL_Event event;
-  Ess3D::InputManager* inputManager = _state->getInputManager();
-
-  inputManager->reset();
-  while(SDL_PollEvent(&event) != 0) {
-    _game->onSDLEvent(event);
-  }
- 
+void GameplayScreen::input(Ess3D::InputManager *inputManager) {
   if(inputManager->isKeyDown(SDLK_ESCAPE)) {
     _currentState = Ess3D::ScreenState::EXIT_APPLICATION;
   }
 
-  glm::vec2 ballDirection = glm::vec2(0.0f);
-  glm::vec2 cameraDirection = glm::vec2(0.f);
-  glm::vec2 paddleLeftDirection = glm::vec2(0.f);
-  glm::vec2 paddleRightDirection = glm::vec2(0.f);
+  _scene->input(inputManager);
+}
 
-  float ballVelocity = 30.f;
-  float cameraVelocity = 0.1f;
-  float paddleLeftVelocity = 20.f;
-  float paddleRightVelocity = 20.f;
-
-  if (inputManager->hasMouseMoved()) {
-    glm::vec2 cursorDeltaPosition = inputManager->getCursorDeltaPosition();
-
-    if (glm::length(cursorDeltaPosition) > 0) {
-      cursorDeltaPosition = glm::normalize(cursorDeltaPosition);
-
-      ballDirection += cursorDeltaPosition;
-      ballDirection.y = -ballDirection.y;
-    }
-  }
-
-  if (inputManager->isKeyDown(SDLK_UP)) {
-    cameraDirection += glm::vec2(0.0f, 1.0f);
-  }
-  if (inputManager->isKeyDown(SDLK_DOWN)) {
-    cameraDirection += glm::vec2(0.0f, -1.0f);
-  }
-  if (inputManager->isKeyDown(SDLK_LEFT)) {
-    cameraDirection += glm::vec2(-1.0f, 0.0f);
-  }
-  if (inputManager->isKeyDown(SDLK_RIGHT)) {
-    cameraDirection += glm::vec2(1.0f, 0.0f);
-  }
-
-  //Controls for paddleLeft
-  if (inputManager->isKeyDown(SDLK_w)) {
-      paddleLeftDirection += glm::vec2(0.0f, 1.0f);
-  }
-  if (inputManager->isKeyDown(SDLK_s)) {
-      paddleLeftDirection += glm::vec2(0.0f, -1.0f);
-  }
-
-  //Controls for paddleRight
-  if (inputManager->isKeyDown(SDLK_o)) {
-      paddleRightDirection += glm::vec2(0.0f, 1.0f);
-  }
-  if (inputManager->isKeyDown(SDLK_l)) {
-      paddleRightDirection += glm::vec2(0.0f, -1.0f);
-  }
-
-  _scene->getCamera()->setPosition(_scene->getCamera()->getPosition() + cameraDirection * cameraVelocity);
-  _scene->getBall()->setVelocity(ballDirection * ballVelocity);
-
-  _scene->getPaddleLeft()->setVelocity(paddleLeftDirection * paddleLeftVelocity);
-  _scene->getPaddleRight()->setVelocity(paddleRightDirection * paddleRightVelocity);
+void GameplayScreen::render() {
+  _scene->render(_sceneRenderer);
 }
 
 SceneRenderer *GameplayScreen::getSceneRenderer() {

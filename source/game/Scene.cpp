@@ -28,35 +28,53 @@ Scene::Scene() {
     atlas->getTexture()->getId(),
     atlas->getUV("paddle_black")
   );
+  _paddleRight->setMoveUpKeyId(SDLK_o);
+  _paddleRight->setMoveDownKeyId(SDLK_l);
 }
 
 Scene::~Scene() = default;
 
-void Scene::render(Ess3D::Renderer2D *renderer) {
-  _ball->draw(renderer);
-  _paddleLeft->draw(renderer);
-  _paddleRight->draw(renderer);
-}
+bool Scene::onUpdate(float deltaTime) {
+  _camera->resetInterpolation();
 
-void Scene::update(float deltaTime) {
+  _camera->update();
   _ball->update(deltaTime);
   _paddleLeft->update(deltaTime);
   _paddleRight->update(deltaTime);
-  _camera->update();
+
+  return true;
 }
 
-void Scene::interpolate(float timestepAccumulatorRatio) {
-  _camera->smoothState(timestepAccumulatorRatio, false);
-  _ball->interpolate(timestepAccumulatorRatio);
-  _paddleLeft->interpolate(timestepAccumulatorRatio);
-  _paddleRight->interpolate(timestepAccumulatorRatio);
+void Scene::onInput(Ess3D::InputManager *inputManager) {
+  glm::vec2 cameraDirection = glm::vec2(0.f);
+  float cameraVelocity = 0.1f;
+
+  if (inputManager->isKeyDown(SDLK_UP)) {
+    cameraDirection += glm::vec2(0.0f, 1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_DOWN)) {
+    cameraDirection += glm::vec2(0.0f, -1.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_LEFT)) {
+    cameraDirection += glm::vec2(-1.0f, 0.0f);
+  }
+  if (inputManager->isKeyDown(SDLK_RIGHT)) {
+    cameraDirection += glm::vec2(1.0f, 0.0f);
+  }
+
+  _camera->setPosition(_camera->getPosition() + cameraDirection * cameraVelocity);
+
+  _ball->input(inputManager);
+  _paddleLeft->input(inputManager);
+  _paddleRight->input(inputManager);
 }
 
-void Scene::resetInterpolation() {
-  _ball->resetInterpolation();
-  _paddleLeft->resetInterpolation();
-  _paddleRight->resetInterpolation();
-  _camera->resetSmoothState();
+void Scene::onRender(Ess3D::Renderer2D *renderer) {
+  _camera->interpolate(Ess3D::State::get()->getTimestepAccumulator()->getAccumulatorRatio(), false);
+
+  _ball->render(renderer);
+  _paddleLeft->render(renderer);
+  _paddleRight->render(renderer);
 }
 
 Ball *Scene::getBall() {
@@ -70,4 +88,3 @@ Paddle *Scene::getPaddleLeft() {
 Paddle *Scene::getPaddleRight() {
   return _paddleRight;
 }
-
