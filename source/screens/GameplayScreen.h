@@ -10,6 +10,7 @@
 #include "../models/Ball.h"
 
 class Game;
+class InputManager;
 
 class GameplayScreen : public Ess3D::IGameScreen {
   public:
@@ -23,8 +24,11 @@ class GameplayScreen : public Ess3D::IGameScreen {
 
     void build() override;
     void destroy() override;
-    void draw() override;
-    void update(float deltaTime, int simulationSteps) override;
+
+    void step(float deltaTime) override; // step one simulation step forward (deltaTime)
+    void update() override; // do non-physics updates
+    void input(Ess3D::InputManager* inputManager) override; // handle input
+    void render() override; // render
 
     void onEntry() override;
     void onExit() override;

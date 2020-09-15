@@ -11,17 +11,15 @@ class Scene : public Ess3D::Scene2D {
 
     virtual ~Scene();
 
-    void render(Ess3D::Renderer2D *renderer) override;
-    void update(float deltaTime) override;
-
-    void interpolate(float timestepAccumulatorRatio) override;
-    void resetInterpolation() override;
-
     Ball* getBall();
     Paddle* getPaddleLeft();
     Paddle* getPaddleRight();
 
   protected:
+    bool onUpdate(float deltaTime) override;
+    void onInput(Ess3D::InputManager *inputManager) override;
+    void onRender(Ess3D::Renderer2D *renderer) override;
+
     Ball* _ball{};
     Paddle* _paddleLeft{};
     Paddle* _paddleRight{};
