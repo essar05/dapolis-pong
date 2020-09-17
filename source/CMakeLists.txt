@@ -31,7 +31,7 @@ set(ALL_FILES
     models/Entity.cpp models/Entity.h
     game/World.cpp game/World.h
     game/Scene.cpp game/Scene.h
-    )
+        rendering/B2DebugRenderer.cpp rendering/B2DebugRenderer.h)
 
 ################################################################################
 # Target

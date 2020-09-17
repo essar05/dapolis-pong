@@ -27,6 +27,10 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
   this->setVelocity(direction * velocity);
 }
 
+void Paddle::initializeBody(b2World *world) {}
+
+void Paddle::initializeFixtures(b2World *world) {}
+
 void Paddle::setVelocity(const glm::vec2& velocity) {
 	_velocity = velocity;
 }

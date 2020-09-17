@@ -2,6 +2,8 @@
 #define DAPOLIS_PONG_ENTITY_H
 
 #include <Ess3D/2d/models/Object2D.h>
+#include <Box2D/box2d.h>
+#include <memory>
 
 class Entity : public Ess3D::Object2D {
   public:
@@ -11,8 +13,13 @@ class Entity : public Ess3D::Object2D {
     void interpolate(float timestepAccumulatorRatio) override;
     void resetInterpolation() override;
 
-  protected:
+    virtual void initializePhysicsBody(b2World* world);
 
+  protected:
+    b2Body* _body;
+
+    virtual void initializeBody(b2World* world)= 0;
+    virtual void initializeFixtures(b2World* world) = 0;
 };
 
 #endif

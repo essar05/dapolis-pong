@@ -12,13 +12,20 @@ class Ball : public Entity {
     Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv);
     ~Ball();
 
-    void setVelocity(const glm::vec2& velocity);
+    void setDirection(const glm::vec2& direction);
+
+    void interpolate(float timestepAccumulatorRatio) override;
+    void resetInterpolation() override;
 
   protected:
     bool onUpdate(float deltaTime) override;
     void onInput(Ess3D::InputManager *inputManager) override;
 
-    glm::vec2 _velocity;
+    void initializeBody(b2World *world) override;
+    void initializeFixtures(b2World *world) override;
+
+    glm::vec2 _direction;
+    float _velocity = 5.5f;
 
 };
 

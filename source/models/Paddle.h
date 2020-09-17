@@ -25,6 +25,9 @@ public:
     bool onUpdate(float deltaTime) override;
     void onInput(Ess3D::InputManager *inputManager) override;
 
+    void initializeBody(b2World *world) override;
+    void initializeFixtures(b2World *world) override;
+
     glm::vec2 _velocity;
 
     unsigned int _moveUpKeyId = SDLK_w;
