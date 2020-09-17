@@ -1,46 +1,19 @@
 #include <Ess3D/core/Config.h>
-#include <Ess3D/resources/TextureCache.h>
 #include <Ess3D/core/State.h>
+#include <Ess3D/2d/rendering/Renderer2D.h>
 #include "Scene.h"
 
 Scene::Scene() {
-  Ess3D::TextureAtlas* atlas = Ess3D::TextureCache::getInstance()->getAtlas("textures/atlas.png", "textures/atlas.json");
-
-  _ball = new Ball(
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    atlas->getTexture()->getId(),
-    atlas->getUV("cluster_bomb")
-  );
-
-  _paddleLeft = new Paddle(
-    //TODO FIX : HARDCODED - must be screen width dependent
-    glm::vec2(-22.f, 0.f),
-    glm::vec2(1.f, 8.f),
-    atlas->getTexture()->getId(),
-    atlas->getUV("paddle_red")
-  );
-
-  _paddleRight = new Paddle(
-    //TODO FIX : HARDCODED - must be screen width dependent
-    glm::vec2(22.f, 0.f),
-    glm::vec2(1.f, 8.f),
-    atlas->getTexture()->getId(),
-    atlas->getUV("paddle_black")
-  );
-  _paddleRight->setMoveUpKeyId(SDLK_o);
-  _paddleRight->setMoveDownKeyId(SDLK_l);
+  _world = std::make_shared<World>();
 }
 
 Scene::~Scene() = default;
 
 bool Scene::onUpdate(float deltaTime) {
   _camera->resetInterpolation();
-
   _camera->update();
-  _ball->update(deltaTime);
-  _paddleLeft->update(deltaTime);
-  _paddleRight->update(deltaTime);
+
+  _world->update(deltaTime);
 
   return true;
 }
@@ -64,27 +37,19 @@ void Scene::onInput(Ess3D::InputManager *inputManager) {
 
   _camera->setPosition(_camera->getPosition() + cameraDirection * cameraVelocity);
 
-  _ball->input(inputManager);
-  _paddleLeft->input(inputManager);
-  _paddleRight->input(inputManager);
+  _world->input(inputManager);
 }
 
 void Scene::onRender(Ess3D::Renderer2D *renderer) {
   _camera->interpolate(Ess3D::State::get()->getTimestepAccumulator()->getAccumulatorRatio(), false);
 
-  _ball->render(renderer);
-  _paddleLeft->render(renderer);
-  _paddleRight->render(renderer);
+  _world->render(renderer);
 }
 
-Ball *Scene::getBall() {
-  return _ball;
+void Scene::onRenderingDone(Ess3D::Renderer2D *renderer) {
+  GLint useTextureUniformID = renderer->getBaseShader()->getUniformLocation("useTexture");
+  glUniform1i(useTextureUniformID, 0);
+
+  _world->getB2World()->DebugDraw();
 }
 
-Paddle *Scene::getPaddleLeft() {
-  return _paddleLeft;
-}
-
-Paddle *Scene::getPaddleRight() {
-  return _paddleRight;
-}

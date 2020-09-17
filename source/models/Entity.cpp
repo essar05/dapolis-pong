@@ -16,3 +16,8 @@ void Entity::interpolate(float timestepAccumulatorRatio) {
 void Entity::resetInterpolation() {
   _previousPosition = _position;
 }
+
+void Entity::initializePhysicsBody(b2World *world) {
+  this->initializeBody(world);
+  this->initializeFixtures(world);
+}
