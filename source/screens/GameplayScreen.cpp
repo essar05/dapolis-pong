@@ -31,18 +31,24 @@ void GameplayScreen::onExit() {}
 void GameplayScreen::build() {
   _scene = new Scene();
   _sceneRenderer = new SceneRenderer();
+
+  this->initGUI();
 }
 
 void GameplayScreen::destroy() {
   delete _scene;
   delete _sceneRenderer;
+
+  _gui.destroy();
 }
 
 void GameplayScreen::step(float deltaTime) {
   _scene->update(deltaTime);
 }
 
-void GameplayScreen::update() {}
+void GameplayScreen::update() {
+  this->updateGUI();
+}
 
 void GameplayScreen::input(Ess3D::InputManager *inputManager) {
   if(inputManager->isKeyDown(SDLK_ESCAPE)) {
@@ -54,8 +60,26 @@ void GameplayScreen::input(Ess3D::InputManager *inputManager) {
 
 void GameplayScreen::render() {
   _scene->render(_sceneRenderer);
+
+  _gui.draw();
 }
 
 SceneRenderer *GameplayScreen::getSceneRenderer() {
   return this->_sceneRenderer;
+}
+
+void GameplayScreen::initGUI() {
+  _gui.init("gui");
+  _gui.loadScheme("pong.scheme");
+  _gui.setFont("Soredona-18");
+
+  _gui.loadLayout("hud.layout");
+
+  // TODO: Pass SDL Events to CEGUI
+}
+
+void GameplayScreen::updateGUI() {
+  // TODO: Performance/efficiency ? Is it worth implementing a state
+  //  and updating only on change ?
+  _gui.getRootWindow()->getChild("HUD/ScoreValue")->setText("0 - 0");
 }
