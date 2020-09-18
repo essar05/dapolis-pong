@@ -3,6 +3,7 @@
 #include <Ess3D/core/IGameScreen.h>
 #include <Ess3D/core/Config.h>
 #include <Ess3D/core/State.h>
+#include <Ess3D/gui/GUI.h>
 #include "../Game.h"
 #include "ScreenIndices.h"
 #include "../rendering/SceneRenderer.h"
@@ -34,10 +35,15 @@ class GameplayScreen : public Ess3D::IGameScreen {
     void onExit() override;
     
   private:
+    void initGUI();
+    void updateGUI();
+
     Game* _game = nullptr;
 
     Ess3D::Config* _config;
     Ess3D::State* _state;
+
+    Ess3D::GUI _gui;
 
     SceneRenderer* _sceneRenderer{};
     Scene* _scene{};

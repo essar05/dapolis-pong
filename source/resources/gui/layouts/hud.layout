@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="HUD" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Property name="AutoRenderingSurface" value="true" />
+        <Window type="Generic/Label" name="ScoreLabel" >
+            <Property name="Area" value="{{0,0},{0,0},{0.0666667,149},{0.0296296,4}}" />
+            <Property name="Font" value="Soredona-18" />
+            <Property name="Text" value="SCORE" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="NormalTextColour" value="FFFFFFFF" />
+            <Property name="HorizontalAlignment" value="Centre" />
+        </Window>
+        <Window type="Generic/Label" name="ScoreValue" >
+            <Property name="Area" value="{{0,2},{0,30},{0.0666667,151},{0.0296296,34}}" />
+            <Property name="Font" value="Soredona-18" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="NormalTextColour" value="FFFFFFFF" />
+            <Property name="HorizontalAlignment" value="Centre" />
+        </Window>
+    </Window>
+</GUILayout>
