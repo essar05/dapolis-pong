@@ -1,135 +1,131 @@
-project(pong CXX)
+PROJECT(pong CXX)
 
 ################################################################################
 # Source groups
 ################################################################################
 
-set(Header_Files
+SET(Header_Files
     "Game.h"
     "screens/GameplayScreen.h"
-    "rendering/SceneRenderer.h"
     "screens/ScreenIndices.h"
     "models/Ball.h"
     "models/Paddle.h"
-)
-source_group("Header Files" FILES ${Header_Files})
+    )
+SOURCE_GROUP("Header Files" FILES ${Header_Files})
 
-set(Source_Files
+SET(Source_Files
     "Bootstrap.cpp"
     "Game.cpp"
     "screens/GameplayScreen.cpp"
-    "rendering/SceneRenderer.cpp"
     "models/Ball.cpp"
     "models/Paddle.cpp"
-)
-source_group("Source Files" FILES ${Source_Files})
+    )
+SOURCE_GROUP("Source Files" FILES ${Source_Files})
 
-set(ALL_FILES
+SET(ALL_FILES
     ${no_group_source_files}
     ${Header_Files}
     ${Source_Files}
     models/Entity.cpp models/Entity.h
     game/World.cpp game/World.h
-    game/Scene.cpp game/Scene.h
-        rendering/B2DebugRenderer.cpp rendering/B2DebugRenderer.h)
+    game/Scene.cpp game/Scene.h)
 
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+ADD_EXECUTABLE(${PROJECT_NAME} ${ALL_FILES})
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-set(ROOT_NAMESPACE Test)
+USE_PROPS(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+SET(ROOT_NAMESPACE Test)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
     VS_GLOBAL_KEYWORD "Win32Proj"
-)
+    )
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_DIRECTORY_DEBUG    "${CMAKE_CURRENT_SOURCE_DIR}/../build/$<CONFIG>/"
-    OUTPUT_DIRECTORY_RELEASE  "${CMAKE_CURRENT_SOURCE_DIR}/../build/$<CONFIG>/"
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION_RELEASE  "TRUE"
-)
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
+    OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_SOURCE_DIR}/../build/$<CONFIG>/"
+    OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/../build/$<CONFIG>/"
+    )
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+    )
 ################################################################################
 # Compile definitions
 ################################################################################
-target_compile_definitions(${PROJECT_NAME} PRIVATE
+TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE
     "$<$<CONFIG:Debug>:"
-        "_DEBUG;"
-        "_CONSOLE;"
-        "_MBCS"
+    "_DEBUG;"
+    "_CONSOLE;"
+    "_MBCS"
     ">"
     "$<$<CONFIG:Release>:"
-        "NDEBUG;"
-        "UNICODE;"
-        "_UNICODE"
+    "NDEBUG;"
+    "UNICODE;"
+    "_UNICODE"
     ">"
     "WIN32;"
     "_LIB;"
     "_CRT_SECURE_NO_WARNINGS"
-)
+    )
 
 ################################################################################
 # Compile and link options
 ################################################################################
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE
+IF (MSVC)
+    TARGET_COMPILE_OPTIONS(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:
-            /Od;
-            ${DEFAULT_CXX_DEBUG_RUNTIME_LIBRARY}
+        /Od;
+        ${DEFAULT_CXX_DEBUG_RUNTIME_LIBRARY}
         >
         $<$<CONFIG:Release>:
-            /O2;
-            /Oi;
-            /MD;
-            /Gy;
-            /utf-8
+        /O2;
+        /Oi;
+        /MD;
+        /Gy;
+        /utf-8
         >
         /sdl;
         /W3;
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         ${DEFAULT_CXX_EXCEPTION_HANDLING};
         /Y-
-    )
-    target_link_options(${PROJECT_NAME} PRIVATE
+        )
+    TARGET_LINK_OPTIONS(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:
-            /DEBUG;
-            /SUBSYSTEM:CONSOLE;
-            /INCREMENTAL;
-            /verbose:lib
+        /DEBUG;
+        /SUBSYSTEM:CONSOLE;
+        /INCREMENTAL;
+        /verbose:lib
         >
         $<$<CONFIG:Release>:
-            /SUBSYSTEM:WINDOWS;
-            /OPT:REF;
-            /OPT:ICF;
-            /INCREMENTAL:NO
+        /SUBSYSTEM:WINDOWS;
+        /OPT:REF;
+        /OPT:ICF;
+        /INCREMENTAL:NO
         >
         )
-endif ()
+ENDIF ()
 
 ################################################################################
 # Post build events
 ################################################################################
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
+ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll ${OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll>" ${OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/Ess3D/resources/shaders/ ${OUTPUT_DIRECTORY}/Shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/Ess3D/resources/shaders/ ${OUTPUT_DIRECTORY}/shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/ ${OUTPUT_DIRECTORY}
-)
+    )
 
 ################################################################################
 # Dependencies
 ################################################################################
-add_dependencies(${PROJECT_NAME}
+ADD_DEPENDENCIES(${PROJECT_NAME}
     Ess3D
     )
 
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
+SET(ADDITIONAL_LIBRARY_DEPENDENCIES
     "$<$<CONFIG:Debug>:"
     "Ess3D"
     ">"
@@ -137,9 +133,9 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "Ess3D"
     ">"
     )
-target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-target_link_directories(${PROJECT_NAME} PUBLIC
+TARGET_LINK_DIRECTORIES(${PROJECT_NAME} PUBLIC
     "$<$<CONFIG:Debug>:"
     "${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/Debug/Ess3D/;"
     ">"
@@ -148,7 +144,6 @@ target_link_directories(${PROJECT_NAME} PUBLIC
     ">"
     )
 
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/;"
-)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/;"
+    )

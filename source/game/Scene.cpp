@@ -44,12 +44,7 @@ void Scene::onRender(Ess3D::Renderer2D *renderer) {
   _camera->interpolate(Ess3D::State::get()->getTimestepAccumulator()->getAccumulatorRatio(), false);
 
   _world->render(renderer);
-}
 
-void Scene::onRenderingDone(Ess3D::Renderer2D *renderer) {
-  GLint useTextureUniformID = renderer->getBaseShader()->getUniformLocation("useTexture");
-  glUniform1i(useTextureUniformID, 0);
-
+  renderer->disableTexture();
   _world->getB2World()->DebugDraw();
 }
-

@@ -6,7 +6,6 @@
 #include <Ess3D/gui/GUI.h>
 #include "../Game.h"
 #include "ScreenIndices.h"
-#include "../rendering/SceneRenderer.h"
 #include "../game/Scene.h"
 #include "../models/Ball.h"
 
@@ -21,8 +20,6 @@ class GameplayScreen : public Ess3D::IGameScreen {
     int getNextScreenIndex() const override;
     int getPreviousScreenIndex() const override;
 
-    SceneRenderer* getSceneRenderer();
-
     void build() override;
     void destroy() override;
 
@@ -30,6 +27,7 @@ class GameplayScreen : public Ess3D::IGameScreen {
     void update() override; // do non-physics updates
     void input(Ess3D::InputManager* inputManager) override; // handle input
     void render() override; // render
+    void onSDLEvent(SDL_Event &event) override;
 
     void onEntry() override;
     void onExit() override;
@@ -45,7 +43,7 @@ class GameplayScreen : public Ess3D::IGameScreen {
 
     Ess3D::GUI _gui;
 
-    SceneRenderer* _sceneRenderer{};
+    Ess3D::Renderer2D* _renderer{};
     Scene* _scene{};
 
 };

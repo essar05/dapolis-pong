@@ -30,14 +30,14 @@ void GameplayScreen::onExit() {}
 
 void GameplayScreen::build() {
   _scene = new Scene();
-  _sceneRenderer = new SceneRenderer();
+  _renderer = new Ess3D::Renderer2D();
 
   this->initGUI();
 }
 
 void GameplayScreen::destroy() {
   delete _scene;
-  delete _sceneRenderer;
+  delete _renderer;
 
   _gui.destroy();
 }
@@ -59,13 +59,13 @@ void GameplayScreen::input(Ess3D::InputManager *inputManager) {
 }
 
 void GameplayScreen::render() {
-  _scene->render(_sceneRenderer);
+  _scene->render(_renderer);
 
   _gui.draw();
 }
 
-SceneRenderer *GameplayScreen::getSceneRenderer() {
-  return this->_sceneRenderer;
+void GameplayScreen::onSDLEvent(SDL_Event &event) {
+  _gui.onSDLEvent(event);
 }
 
 void GameplayScreen::initGUI() {
@@ -74,8 +74,6 @@ void GameplayScreen::initGUI() {
   _gui.setFont("Soredona-18");
 
   _gui.loadLayout("hud.layout");
-
-  // TODO: Pass SDL Events to CEGUI
 }
 
 void GameplayScreen::updateGUI() {

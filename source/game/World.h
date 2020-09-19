@@ -8,7 +8,7 @@
 #include <memory>
 #include "../models/Ball.h"
 #include "../models/Paddle.h"
-#include "../rendering/B2DebugRenderer.h"
+#include <Ess3D/2d/rendering/B2DebugRenderer.h>
 
 class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3D::IRenderable2D {
   public:
@@ -26,7 +26,7 @@ class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3
 
   protected:
     std::shared_ptr<b2World> _b2World;
-    B2DebugRenderer _b2DebugRenderer;
+    Ess3D::B2DebugRenderer _b2DebugRenderer;
 
     std::shared_ptr<Ball> _ball{};
     std::shared_ptr<Paddle> _paddleLeft{};

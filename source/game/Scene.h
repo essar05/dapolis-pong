@@ -18,8 +18,6 @@ class Scene : public Ess3D::Scene2D {
     void onInput(Ess3D::InputManager *inputManager) override;
     void onRender(Ess3D::Renderer2D *renderer) override;
 
-    void onRenderingDone(Ess3D::Renderer2D *renderer) override;
-
     std::shared_ptr<World> _world;
 
 };

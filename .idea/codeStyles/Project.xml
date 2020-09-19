@@ -1,11 +1,19 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <CMakeCodeStyleSettings>
+      <option name="FORCE_COMMANDS_CASE" value="0" />
+    </CMakeCodeStyleSettings>
     <Objective-C>
       <option name="INDENT_NAMESPACE_MEMBERS" value="2" />
       <option name="INDENT_C_STRUCT_MEMBERS" value="2" />
       <option name="INDENT_VISIBILITY_KEYWORDS" value="2" />
       <option name="INDENT_INSIDE_CODE_BLOCK" value="2" />
     </Objective-C>
+    <codeStyleSettings language="CMake">
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+      </indentOptions>
+    </codeStyleSettings>
     <codeStyleSettings language="ObjectiveC">
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
