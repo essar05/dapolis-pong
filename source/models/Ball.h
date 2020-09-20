@@ -25,7 +25,7 @@ class Ball : public Entity {
     void initializeFixtures(b2World *world) override;
 
     glm::vec2 _impulse = glm::vec2(0.f);
-    float _impulseMagnitude = 5.5f;
+    float _impulseMagnitude = 15.0f;
 
 };
 

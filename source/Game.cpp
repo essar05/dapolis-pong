@@ -19,6 +19,7 @@ void Game::onInit() {
   _config->setTitle("DAPOLIS // pong");
   _config->setWidth(1800.f);
   _config->setHeight(1000.f);
+  _config->setVSync(true);
 }
 
 void Game::onExit() {
