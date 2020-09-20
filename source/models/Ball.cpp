@@ -9,21 +9,30 @@ Ball::Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, c
 Ball::~Ball() = default;
 
 bool Ball::onUpdate(float deltaTime) {
-  _body->SetLinearVelocity(Ess3D::Utils2D::toB2Vec2(_direction * _velocity));
+  // if the magnitude of the impulse vector is > 0
+  if (glm::length(_impulse) > 0.f) {
+    // apply impulse
+    _body->ApplyLinearImpulseToCenter(Ess3D::Utils2D::toB2Vec2(_impulse), true);
+    _body->ApplyTorque(15.f, true); // spin the ball just for fun
+
+    // reset the impulse
+    _impulse = glm::vec2(0.f);
+  }
 
   return true;
 }
 
-void Ball::onInput(Ess3D::InputManager *inputManager) {
-
+void Ball::applyImpulse(const glm::vec2 &direction) {
+  _impulse = direction * _impulseMagnitude;
 }
+
+void Ball::onInput(Ess3D::InputManager *inputManager) {}
 
 void Ball::initializeBody(b2World *world) {
   b2BodyDef bodyDef;
   bodyDef.type = b2_dynamicBody;
   bodyDef.position.Set(_position.x, _position.y);
   bodyDef.angle = glm::radians(0.0f);
-  bodyDef.fixedRotation = true;
 
   _body = world->CreateBody(&bodyDef);
 }
@@ -35,11 +44,9 @@ void Ball::initializeFixtures(b2World *world) {
   b2FixtureDef definition;
   definition.shape = &shape;
   definition.density = 1.0f;
+  definition.friction = 0.f; //0, as otherwise the ball will slowly lose velocity over time
+  definition.restitution = 1.f; // "bounciness"
   _body->CreateFixture(&definition);
-}
-
-void Ball::setDirection(const glm::vec2& direction) {
-	_direction = direction;
 }
 
 void Ball::interpolate(float timestepAccumulatorRatio) {
@@ -47,6 +54,10 @@ void Ball::interpolate(float timestepAccumulatorRatio) {
 
   this->_interpolatedPosition = timestepAccumulatorRatio * Ess3D::Utils2D::toVec2(_body->GetPosition()) +
                                 oneMinusRatio * _previousPosition;
+
+  // TODO: have a _previousAngle.
+  // TODO: ? come up with some sort of Interpolatable class to avoid having 3 separate members for one particular object property
+  this->_angle = timestepAccumulatorRatio * _body->GetAngle() + oneMinusRatio * _angle;
 }
 
 void Ball::resetInterpolation() {

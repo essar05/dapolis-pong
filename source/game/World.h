@@ -10,6 +10,11 @@
 #include "../models/Paddle.h"
 #include <Ess3D/2d/rendering/B2DebugRenderer.h>
 
+enum WorldBorderOrientation {
+  HORIZONTAL,
+  VERTICAL
+};
+
 class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3D::IRenderable2D {
   public:
     World();
@@ -24,13 +29,22 @@ class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3
     Paddle* getPaddleLeft();
     Paddle* getPaddleRight();
 
+    float getWidth();
+
+    void buildWorldBorders(const glm::vec2& worldSize);
+
   protected:
+    void initializeB2World();
+    void buildWorldBorder(const glm::vec2& position, float length, WorldBorderOrientation orientation);
+
     std::shared_ptr<b2World> _b2World;
     Ess3D::B2DebugRenderer _b2DebugRenderer;
 
     std::shared_ptr<Ball> _ball{};
     std::shared_ptr<Paddle> _paddleLeft{};
     std::shared_ptr<Paddle> _paddleRight{};
+
+    float _width = 50.f;
 
 };
 

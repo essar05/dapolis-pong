@@ -1,30 +1,10 @@
 # dapolis-pong
 
-## Specifications
+## About
+2D Pong clone built using the [Ess3D](https://github.com/essar05/Ess3D) game engine. Technologies used: C++, OpenGL, SDL, Box2D, CEGUI, FMOD.  
 
-### Engine code additions:
-- **Ess3D:Entity**
-  - update
-  - draw
-		
-- **Ess3D:Entity2D : Ess3D:Entity**
-- **Ess3D:EntityManager**
-
-### Game code additions:
-- (Ess3D:?) **World**
-  - score ? (or in gameplayscreen)
-  - b2World
-		
-  - **Player1 : Ess3D:Entity2D**
-    - b2Data
-  - **Player2 : Ess3D:Entity2D**
-    - b2Data
-  - **Ball : Ess3D:Entity2D**
-    - b2Data
-
-
-### Objectives
-#### Iteration 1:		
+## Objectives
+### Iteration 1:		
 - Move Players up & down
 - spawn ball with random direction
 - if ball touches left wall or right wall, add 1 score to player2 or player1 respectively
@@ -32,7 +12,7 @@
 - display score using GUI
 - display background image
 		
-#### Iteration 2:
+### Iteration 2:
 - smooth updates (physics interpolation)
 - Animations for the players & ball
 - scale bg image to window size

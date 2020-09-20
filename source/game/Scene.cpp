@@ -5,6 +5,11 @@
 
 Scene::Scene() {
   _world = std::make_shared<World>();
+  // set the camera to view the entire world's width
+  _camera->setWidth(_world->getWidth());
+
+  // set the border edges of the world to the camera's edges
+  _world->buildWorldBorders(_camera->getSize());
 }
 
 Scene::~Scene() = default;

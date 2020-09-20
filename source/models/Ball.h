@@ -12,7 +12,7 @@ class Ball : public Entity {
     Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv);
     ~Ball();
 
-    void setDirection(const glm::vec2& direction);
+    void applyImpulse(const glm::vec2& direction);
 
     void interpolate(float timestepAccumulatorRatio) override;
     void resetInterpolation() override;
@@ -24,8 +24,8 @@ class Ball : public Entity {
     void initializeBody(b2World *world) override;
     void initializeFixtures(b2World *world) override;
 
-    glm::vec2 _direction;
-    float _velocity = 5.5f;
+    glm::vec2 _impulse = glm::vec2(0.f);
+    float _impulseMagnitude = 5.5f;
 
 };
 

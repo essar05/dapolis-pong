@@ -3,10 +3,7 @@
 #include "World.h"
 
 World::World() {
-  _b2World = std::make_shared<b2World>(b2Vec2(0, 0));
-  _b2World->SetAutoClearForces(false);
-  _b2World->SetDebugDraw(&_b2DebugRenderer);
-  _b2DebugRenderer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
+  this->initializeB2World();
 
   Ess3D::TextureAtlas* atlas = Ess3D::TextureCache::getInstance()->getAtlas("textures/atlas.png", "textures/atlas.json");
 
@@ -22,7 +19,7 @@ World::World() {
   std::mt19937 randomGenerator(randomDevice());
   std::uniform_real_distribution<double> distribution(1.0, 10.0);
   glm::vec2 ballDirection = glm::normalize(glm::vec2(distribution(randomGenerator), distribution(randomGenerator)));
-  _ball->setDirection(ballDirection);
+  _ball->applyImpulse(ballDirection);
 
   _paddleLeft = std::make_shared<Paddle>(
     //TODO FIX : HARDCODED - must be screen width dependent
@@ -82,4 +79,51 @@ Paddle *World::getPaddleRight() {
 
 b2World *World::getB2World() {
   return _b2World.get();
+}
+
+void World::initializeB2World() {
+  _b2World = std::make_shared<b2World>(b2Vec2(0, 0));
+  _b2World->SetAutoClearForces(true);
+  _b2World->SetDebugDraw(&_b2DebugRenderer);
+  _b2DebugRenderer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
+}
+
+void World::buildWorldBorders(const glm::vec2& worldSize) {
+  //TOP
+  this->buildWorldBorder(glm::vec2(0.f, worldSize.y / 2), worldSize.x, WorldBorderOrientation::HORIZONTAL);
+  //BOTTOM
+  this->buildWorldBorder(glm::vec2(0.f, - worldSize.y / 2), worldSize.x, WorldBorderOrientation::HORIZONTAL);
+  //LEFT
+  this->buildWorldBorder(glm::vec2(- worldSize.x / 2, 0.f), worldSize.y, WorldBorderOrientation::VERTICAL);
+  //RIGHT
+  this->buildWorldBorder(glm::vec2(worldSize.x / 2, 0.f), worldSize.y, WorldBorderOrientation::VERTICAL);
+}
+
+void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorderOrientation orientation) {
+  b2BodyDef bodyDef;
+  bodyDef.type = b2_staticBody;
+  bodyDef.position.Set(position.x, position.y);
+  bodyDef.angle = glm::radians(0.0f);
+
+  b2Body* edge = _b2World->CreateBody(&bodyDef);
+
+  b2Vec2 pointA = b2Vec2(
+    orientation == WorldBorderOrientation::HORIZONTAL ? - length / 2 : 0.f,
+    orientation == WorldBorderOrientation::VERTICAL ? - length / 2 : 0.f
+    );
+  b2Vec2 pointB = b2Vec2(
+    orientation == WorldBorderOrientation::HORIZONTAL ? length / 2 : 0.f,
+    orientation == WorldBorderOrientation::VERTICAL ? length / 2 : 0.f
+    );
+
+  b2EdgeShape shape;
+  shape.SetTwoSided(pointA, pointB);
+
+  b2FixtureDef definition;
+  definition.shape = &shape;
+  edge->CreateFixture(&definition);
+}
+
+float World::getWidth() {
+  return _width;
 }
