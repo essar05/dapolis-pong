@@ -9,15 +9,14 @@ Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureI
 Paddle::~Paddle() = default;
 
 bool Paddle::onUpdate(float deltaTime) {
-  _position += _velocity * deltaTime;
- 
+  //_position += _velocity * deltaTime;
 
   return true;
 }
 
 void Paddle::initializeBody(b2World* world) {
     b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = b2_kinematicBody;
     bodyDef.position.Set(_position.x, _position.y);
     bodyDef.angle = glm::radians(0.0f);
 
@@ -25,27 +24,8 @@ void Paddle::initializeBody(b2World* world) {
 }
 
 void Paddle::initializeFixtures(b2World* world) {
-    b2Vec2 points[4] = {
-        b2Vec2(
-            _position.x - 2.0f,
-            _position.y - 100.0f
-        ),
-        b2Vec2(
-            _position.x + 2.0f,
-            _position.y - 100.0f
-        ),
-        b2Vec2(
-            _position.x + 2.0f,
-            _position.y + 100.0f
-        ),
-        b2Vec2(
-            _position.x - 2.0f,
-            _position.y + 100.0f
-        ),
-    };
-
     b2PolygonShape shape;
-    shape.Set(points, 4);
+    shape.SetAsBox(_size.x / 2, _size.y / 2);
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;

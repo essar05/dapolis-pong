@@ -37,7 +37,7 @@ World::World() {
     atlas->getTexture()->getId(),
     atlas->getUV("paddle_black")
   );
-  _paddleLeft->initializePhysicsBody(_b2World.get());
+  _paddleRight->initializePhysicsBody(_b2World.get());
   _paddleRight->setMoveUpKeyId(SDLK_o);
   _paddleRight->setMoveDownKeyId(SDLK_l);
 }
