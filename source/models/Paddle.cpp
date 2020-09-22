@@ -9,7 +9,8 @@ Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureI
 Paddle::~Paddle() = default;
 
 bool Paddle::onUpdate(float deltaTime) {
-  //_position += _velocity * deltaTime;
+    _body->SetLinearVelocity(Ess3D::Utils2D::toB2Vec2(_velocity));
+    _body->SetAngularVelocity(glm::radians(_angleDegree));
 
   return true;
 }
@@ -38,19 +39,31 @@ void Paddle::initializeFixtures(b2World* world) {
 void Paddle::onInput(Ess3D::InputManager *inputManager) {
   glm::vec2 direction = glm::vec2(0.f);
   float velocity = 20.f;
-
+  float angle = 0;
+    
   if (inputManager->isKeyDown(_moveUpKeyId)) {
     direction += glm::vec2(0.0f, 1.0f);
   }
   if (inputManager->isKeyDown(_moveDownKeyId)) {
     direction += glm::vec2(0.0f, -1.0f);
   }
+  if (inputManager->isKeyDown(_moveLeftKeyId)) {
+      angle = 360; //this is used with SetAngularVelocity which changes over 1 second
+  }
+  if (inputManager->isKeyDown(_moveRightKeyId)) {
+      angle = -360; //this is used with SetAngularVelocity which changes over 1 second
+  }
 
   this->setVelocity(direction * velocity);
+  this->setAngleDegree(angle);
 }
 
 void Paddle::setVelocity(const glm::vec2& velocity) {
 	_velocity = velocity;
+}
+
+void Paddle::setAngleDegree(float angleDegree) {
+    _angleDegree = angleDegree;
 }
 
 unsigned int Paddle::getMoveUpKeyId() const {
@@ -69,3 +82,18 @@ void Paddle::setMoveDownKeyId(unsigned int moveDownKeyId) {
   _moveDownKeyId = moveDownKeyId;
 }
 
+unsigned int Paddle::getMoveLeftKeyId() const {
+    return _moveLeftKeyId;
+}
+
+void Paddle::setMoveLeftKeyId(unsigned int moveLeftKeyId) {
+    _moveLeftKeyId = moveLeftKeyId;
+}
+
+unsigned int Paddle::getMoveRightKeyId() const {
+    return _moveRightKeyId;
+}
+
+void Paddle::setMoveRightKeyId(unsigned int moveRightKeyId) {
+    _moveRightKeyId = moveRightKeyId;
+}

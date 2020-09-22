@@ -38,8 +38,10 @@ World::World() {
     atlas->getUV("paddle_black")
   );
   _paddleRight->initializePhysicsBody(_b2World.get());
-  _paddleRight->setMoveUpKeyId(SDLK_o);
-  _paddleRight->setMoveDownKeyId(SDLK_l);
+  _paddleRight->setMoveUpKeyId(SDLK_i);
+  _paddleRight->setMoveDownKeyId(SDLK_k);
+  _paddleRight->setMoveLeftKeyId(SDLK_j);
+  _paddleRight->setMoveRightKeyId(SDLK_l);
 }
 
 void World::render(Ess3D::Renderer2D *renderer) {
@@ -121,6 +123,7 @@ void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorde
 
   b2FixtureDef definition;
   definition.shape = &shape;
+  //definition.friction = 100.f;
   edge->CreateFixture(&definition);
 }
 
