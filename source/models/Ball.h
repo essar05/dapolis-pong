@@ -14,9 +14,6 @@ class Ball : public Entity {
 
     void applyImpulse(const glm::vec2& direction);
 
-    void interpolate(float timestepAccumulatorRatio) override;
-    void resetInterpolation() override;
-
   protected:
     bool onUpdate(float deltaTime) override;
     void onInput(Ess3D::InputManager *inputManager) override;

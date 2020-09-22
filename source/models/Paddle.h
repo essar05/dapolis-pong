@@ -14,12 +14,19 @@ public:
     ~Paddle();
 
     void setVelocity(const glm::vec2& velocity);
+    void setAngleDegree(float angleDegree);
 
     unsigned int getMoveUpKeyId() const;
     void setMoveUpKeyId(unsigned int moveUpKeyId);
 
     unsigned int getMoveDownKeyId() const;
     void setMoveDownKeyId(unsigned int moveDownKeyId);
+
+    unsigned int getMoveLeftKeyId() const;
+    void setMoveLeftKeyId(unsigned int moveLeftKeyId);
+
+    unsigned int getMoveRightKeyId() const;
+    void setMoveRightKeyId(unsigned int moveRightKeyId);
 
   protected:
     bool onUpdate(float deltaTime) override;
@@ -29,9 +36,12 @@ public:
     void initializeFixtures(b2World *world) override;
 
     glm::vec2 _velocity;
+    float _angleDegree;
 
     unsigned int _moveUpKeyId = SDLK_w;
     unsigned int _moveDownKeyId = SDLK_s;
+    unsigned int _moveLeftKeyId = SDLK_a;
+    unsigned int _moveRightKeyId = SDLK_d;
 
 };
 

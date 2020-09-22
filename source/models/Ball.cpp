@@ -13,7 +13,7 @@ bool Ball::onUpdate(float deltaTime) {
   if (glm::length(_impulse) > 0.f) {
     // apply impulse
     _body->ApplyLinearImpulseToCenter(Ess3D::Utils2D::toB2Vec2(_impulse), true);
-    _body->ApplyTorque(15.f, true); // spin the ball just for fun
+    _body->ApplyTorque(15.0f, true); // spin the ball just for fun
 
     // reset the impulse
     _impulse = glm::vec2(0.f);
@@ -47,20 +47,4 @@ void Ball::initializeFixtures(b2World *world) {
   definition.friction = 0.f; //0, as otherwise the ball will slowly lose velocity over time
   definition.restitution = 1.f; // "bounciness"
   _body->CreateFixture(&definition);
-}
-
-void Ball::interpolate(float timestepAccumulatorRatio) {
-  float oneMinusRatio = 1.0f - timestepAccumulatorRatio;
-
-  this->_interpolatedPosition = timestepAccumulatorRatio * Ess3D::Utils2D::toVec2(_body->GetPosition()) +
-                                oneMinusRatio * _previousPosition;
-
-  // TODO: have a _previousAngle.
-  // TODO: ? come up with some sort of Interpolatable class to avoid having 3 separate members for one particular object property
-  this->_angle = timestepAccumulatorRatio * _body->GetAngle() + oneMinusRatio * _angle;
-}
-
-void Ball::resetInterpolation() {
-  glm::vec2 position = Ess3D::Utils2D::toVec2(_body->GetPosition());
-  _previousPosition = position;
 }
