@@ -15,6 +15,7 @@ enum WorldBorderOrientation {
   VERTICAL
 };
 
+// move to Ess3D
 class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3D::IRenderable2D {
   public:
     World();

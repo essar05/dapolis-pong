@@ -26,7 +26,6 @@ SET(ALL_FILES
     ${no_group_source_files}
     ${Header_Files}
     ${Source_Files}
-    models/Entity.cpp models/Entity.h
     game/World.cpp game/World.h
     game/Scene.cpp game/Scene.h)
 
