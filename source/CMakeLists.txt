@@ -51,29 +51,30 @@ SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
-################################################################################
-# Compile definitions
-################################################################################
-TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE
-    "$<$<CONFIG:Debug>:"
-    "_DEBUG;"
-    "_CONSOLE;"
-    "_MBCS"
-    ">"
-    "$<$<CONFIG:Release>:"
-    "NDEBUG;"
-    "UNICODE;"
-    "_UNICODE"
-    ">"
-    "WIN32;"
-    "_LIB;"
-    "_CRT_SECURE_NO_WARNINGS"
-    )
 
 ################################################################################
 # Compile and link options
 ################################################################################
 IF (MSVC)
+    ################################################################################
+    # Compile definitions
+    ################################################################################
+    TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+        "_DEBUG;"
+        "_CONSOLE;"
+        "_MBCS"
+        ">"
+        "$<$<CONFIG:Release>:"
+        "NDEBUG;"
+        "UNICODE;"
+        "_UNICODE"
+        ">"
+        "WIN32;"
+        "_LIB;"
+        "_CRT_SECURE_NO_WARNINGS"
+        )
+
     TARGET_COMPILE_OPTIONS(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:
         /Od;
@@ -111,9 +112,21 @@ ENDIF ()
 ################################################################################
 # Post build events
 ################################################################################
+
+IF (MSVC)
+    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll ${OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll>" ${OUTPUT_DIRECTORY}
+        )
+ENDIF (MSVC)
+
+IF (UNIX)
+    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/libEss3D.so ${OUTPUT_DIRECTORY}
+        )
+ENDIF (UNIX)
+
 ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll ${OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/build/$<CONFIG>/Ess3D/Ess3D.dll>" ${OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Ess3D/source/Ess3D/resources/shaders/ ${OUTPUT_DIRECTORY}/shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/ ${OUTPUT_DIRECTORY}
     )

@@ -4,7 +4,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <GL/glew.h>
-#include <SDL_keycode.h>
+#include <SDL2/SDL_keycode.h>
 #include "Entity.h"
 
 class Paddle : public Entity {
