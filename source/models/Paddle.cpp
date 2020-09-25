@@ -11,7 +11,7 @@ Paddle::~Paddle() = default;
 
 bool Paddle::onUpdate(float deltaTime) {
   _body->SetLinearVelocity(Ess3D::Utils2D::toB2Vec2(_velocity));
-  _body->SetAngularVelocity(glm::radians(_angleDegree));
+  _body->SetAngularVelocity(_angularVelocity);
 
   return true;
 }
@@ -49,14 +49,14 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
     direction += glm::vec2(0.0f, -1.0f);
   }
   if (inputManager->isKeyDown(_moveLeftKeyId)) {
-    angularVelocity = 360.f;
+    angularVelocity = glm::radians(360.f);
   }
   if (inputManager->isKeyDown(_moveRightKeyId)) {
-    angularVelocity = -360.f;
+    angularVelocity = glm::radians(-360.f);
   }
 
   this->setVelocity(direction * velocity);
-  this->setAngularVelocity(glm::radians(angularVelocity));
+  this->setAngularVelocity(angularVelocity);
 }
 
 void Paddle::setVelocity(const glm::vec2 &velocity) {
