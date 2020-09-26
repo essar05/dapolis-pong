@@ -1,5 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
+#include <SDL2/SDL.h>
 #include <errors/RuntimeException.h>
 #include "Game.h"
 
