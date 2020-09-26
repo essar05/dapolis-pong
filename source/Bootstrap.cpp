@@ -1,6 +1,7 @@
 #define _CRTDBG_MAP_ALLOC
 
-#include <errors/RuntimeException.cpp>
+#include <SDL2/SDL.h>
+#include <Ess3D/errors/RuntimeException.h>
 #include "Game.h"
 
 int main(int argc, char* args[]) {

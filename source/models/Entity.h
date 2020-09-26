@@ -2,7 +2,7 @@
 #define DAPOLIS_PONG_ENTITY_H
 
 #include <Ess3D/2d/models/Object2D.h>
-#include <Box2D/box2d.h>
+#include <box2d/box2d.h>
 #include <memory>
 
 class Entity : public Ess3D::Object2D {
