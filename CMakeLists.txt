@@ -81,6 +81,6 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-ADD_SUBDIRECTORY(dependencies/Ess3D/source/Ess3D)
+ADD_SUBDIRECTORY(dependencies/Ess3D)
 ADD_SUBDIRECTORY(source)
 

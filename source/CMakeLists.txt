@@ -4,29 +4,13 @@ PROJECT(pong CXX)
 # Source groups
 ################################################################################
 
-SET(Header_Files
-    "Game.h"
-    "screens/GameplayScreen.h"
-    "screens/ScreenIndices.h"
-    "models/Ball.h"
-    "models/Paddle.h"
-    )
-SOURCE_GROUP("Header Files" FILES ${Header_Files})
-
-SET(Source_Files
-    "Bootstrap.cpp"
-    "Game.cpp"
-    "screens/GameplayScreen.cpp"
-    "models/Ball.cpp"
-    "models/Paddle.cpp"
-    )
-SOURCE_GROUP("Source Files" FILES ${Source_Files})
-
 SET(ALL_FILES
-    ${no_group_source_files}
-    ${Header_Files}
-    ${Source_Files}
+    Bootstrap.cpp
+    Game.cpp Game.h
+    screens/GameplayScreen.cpp screens/GameplayScreen.h
+    models/Ball.cpp models/Ball.h
     models/Entity.cpp models/Entity.h
+    models/Paddle.cpp models/Paddle.h
     game/World.cpp game/World.h
     game/Scene.cpp game/Scene.h
     )
@@ -117,14 +101,14 @@ ENDIF ()
 
 IF (MSVC)
     ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/Ess3D/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.dll ${OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/Ess3D/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/Ess3D/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.dll>" ${OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.dll ${OUTPUT_DIRECTORY}
+        COMMAND ${CMAKE_COMMAND} -E copy "$<$<CONFIG:Debug>:${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.pdb>$<$<CONFIG:Release>:${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/${PLATFORM_ARCHITECTURE}/$<CONFIG>/Ess3D.dll>" ${OUTPUT_DIRECTORY}
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/dependencies/bin/${PLATFORM_ARCHITECTURE}/$<CONFIG> ${OUTPUT_DIRECTORY}
         )
 ENDIF (MSVC)
 
 ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/source/Ess3D/resources/shaders/ ${OUTPUT_DIRECTORY}/shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/source/resources/shaders/ ${OUTPUT_DIRECTORY}/shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources/ ${OUTPUT_DIRECTORY}
     )
 
@@ -142,8 +126,4 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}
 
 TARGET_LINK_DIRECTORIES(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/build/Ess3D/${PLATFORM_ARCHITECTURE}/$<CONFIG>/;"
-    )
-
-TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/../dependencies/Ess3D/source/;"
     )
