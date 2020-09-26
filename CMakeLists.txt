@@ -1,87 +1,86 @@
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.13.0 FATAL_ERROR)
 
-set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+SET(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+SET(CMAKE_VERBOSE_MAKEFILE ON)
 
-project(dapolis-pong CXX)
+PROJECT(dapolis-pong CXX)
 
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "Win32")
-endif()
-message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
+IF (MSVC)
+    IF (NOT CMAKE_VS_PLATFORM_NAME)
+        SET(CMAKE_VS_PLATFORM_NAME "x64")
+    ENDIF ()
+    MESSAGE("${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
-if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
-endif()
+    IF (NOT (("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64") OR ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")))
+        MESSAGE(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
+    ENDIF ()
+
+    IF ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+        SET(PLATFORM_ARCHITECTURE "Win64")
+    ENDIF()
+    IF ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        SET(PLATFORM_ARCHITECTURE "Win32")
+    ENDIF()
+ENDIF ()
+
+IF (UNIX)
+    SET(PLATFORM_ARCHITECTURE "x86_x64")
+ENDIF()
 
 ################################################################################
 # Global configuration types
 ################################################################################
-set(CMAKE_CONFIGURATION_TYPES
-        "Debug"
-        "Release"
-        CACHE STRING "" FORCE
-        )
+SET(CMAKE_CONFIGURATION_TYPES
+    "Debug"
+    "Release"
+    CACHE STRING "" FORCE
+    )
 
 ################################################################################
 # Global compiler options
 ################################################################################
-if(MSVC)
+IF (MSVC)
     # remove default flags provided with CMake for MSVC
-    set(CMAKE_CXX_FLAGS "")
-    set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS_RELEASE "")
-endif()
+    SET(CMAKE_CXX_FLAGS "")
+    SET(CMAKE_CXX_FLAGS_DEBUG "")
+    SET(CMAKE_CXX_FLAGS_RELEASE "")
+ENDIF ()
 
 ################################################################################
 # Global linker options
 ################################################################################
-if(MSVC)
+IF (MSVC)
     # remove default flags provided with CMake for MSVC
-    set(CMAKE_EXE_LINKER_FLAGS "")
-    set(CMAKE_MODULE_LINKER_FLAGS "")
-    set(CMAKE_SHARED_LINKER_FLAGS "")
-    set(CMAKE_STATIC_LINKER_FLAGS "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
-endif()
-
-################################################################################
-# Nuget packages function stub.
-################################################################################
-function(use_package TARGET PACKAGE VERSION)
-    message(WARNING "No implementation of use_package. Create yours. "
-            "Package \"${PACKAGE}\" with version \"${VERSION}\" "
-            "for target \"${TARGET}\" is ignored!")
-endfunction()
+    SET(CMAKE_EXE_LINKER_FLAGS "")
+    SET(CMAKE_MODULE_LINKER_FLAGS "")
+    SET(CMAKE_SHARED_LINKER_FLAGS "")
+    SET(CMAKE_STATIC_LINKER_FLAGS "")
+    SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
+    SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
+    SET(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
+    SET(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
+    SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
+    SET(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
+    SET(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
+    SET(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
+ENDIF ()
 
 ################################################################################
 # Common utils
 ################################################################################
-include(lib/CMake/Utils.cmake)
-
-################################################################################
-# Additional Global Settings(add specific info there)
-################################################################################
-include(lib/CMake/GlobalSettingsInclude.cmake OPTIONAL)
+INCLUDE(dependencies/Ess3D/cmake/Utils.cmake)
 
 ################################################################################
 # Use solution folders feature
 ################################################################################
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(lib/Ess3D/source/Ess3D)
-add_subdirectory(source)
+ADD_SUBDIRECTORY(dependencies/Ess3D)
+ADD_SUBDIRECTORY(source)
 

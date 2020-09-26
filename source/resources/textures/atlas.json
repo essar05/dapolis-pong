@@ -61,5 +61,19 @@
     "y": 80,
     "width": 35,
     "height": 22
+  },
+  {
+    "name": "new_paddle_orange",
+    "x": 121,
+    "y": 1,
+    "width": 85,
+    "height": 17
+  },
+  {
+    "name": "new_paddle_blue",
+    "x": 162,
+    "y": 1,
+    "width": 85,
+    "height": 17
   }
 ]

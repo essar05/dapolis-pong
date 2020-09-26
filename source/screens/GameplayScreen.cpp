@@ -1,5 +1,5 @@
 #include "GameplayScreen.h"
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
 
 GameplayScreen::GameplayScreen() {
   _game = Game::GetInstance();
@@ -70,7 +70,7 @@ void GameplayScreen::onSDLEvent(SDL_Event &event) {
 
 void GameplayScreen::initGUI() {
   _gui.init("gui");
-  _gui.loadScheme("pong.scheme");
+  _gui.loadScheme("Pong.scheme");
   _gui.setFont("Soredona-18");
 
   _gui.loadLayout("hud.layout");

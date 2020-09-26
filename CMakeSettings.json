@@ -1,27 +1,51 @@
 ﻿{
   "configurations": [
     {
-      "name": "x86-Debug",
+      "name": "Debug x86",
       "generator": "Ninja",
       "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "buildRoot": "${projectDir}\\cmake-cache\\build\\${name}",
+      "installRoot": "${projectDir}\\cmake-cache\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_VS_PLATFORM_NAME=Win32",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x86" ],
       "variables": []
     },
     {
-      "name": "x86-Release",
+      "name": "Release x86",
       "generator": "Ninja",
       "configurationType": "Release",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "buildRoot": "${projectDir}\\cmake-cache\\build\\${name}",
+      "installRoot": "${projectDir}\\cmake-cache\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_VS_PLATFORM_NAME=Win32",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x86" ],
+      "variables": []
+    },
+    {
+      "name": "Debug x64",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\cmake-cache\\build\\${name}",
+      "installRoot": "${projectDir}\\cmake-cache\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_VS_PLATFORM_NAME=x64",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64" ],
+      "variables": []
+    },
+    {
+      "name": "Release x64",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\cmake-cache\\build\\${name}",
+      "installRoot": "${projectDir}\\cmake-cache\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_VS_PLATFORM_NAME=x64",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64" ],
       "variables": []
     }
   ]

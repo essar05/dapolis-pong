@@ -1,11 +1,11 @@
 #ifndef DAPOLIS_PONG_PADDLE_H
 #define DAPOLIS_PONG_PADDLE_H
 
+#include <Ess3D/2d/models/Entity2D.h>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <GL/glew.h>
-#include <SDL_keycode.h>
-#include <Ess3D/2d/models/Entity2D.h>
+#include <SDL2/SDL_keycode.h>
 
 class Paddle : public Ess3D::Entity2D {
   public:

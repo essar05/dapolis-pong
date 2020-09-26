@@ -26,7 +26,7 @@ World::World() {
     glm::vec2(-22.f, 0.f),
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
-    atlas->getUV("paddle_red")
+    atlas->getUV("new_paddle_orange")
   );
   _paddleLeft->initializePhysicsBody(_b2World.get());
 
@@ -35,7 +35,7 @@ World::World() {
     glm::vec2(22.f, 0.f),
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
-    atlas->getUV("paddle_black")
+    atlas->getUV("new_paddle_blue")
   );
   _paddleRight->initializePhysicsBody(_b2World.get());
   _paddleRight->setMoveUpKeyId(SDLK_i);

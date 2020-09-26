@@ -4,7 +4,7 @@
 #include <Ess3D/2d/traits/IRenderable2D.h>
 #include <Ess3D/core/traits/IHandlesInput.h>
 #include <Ess3D/core/traits/IUpdatable.h>
-#include <Box2D/box2d.h>
+#include <box2d/box2d.h>
 #include <memory>
 #include "../models/Ball.h"
 #include "../models/Paddle.h"

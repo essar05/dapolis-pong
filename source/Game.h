@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <iostream>
 #include "screens/GameplayScreen.h"
