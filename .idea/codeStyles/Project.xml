@@ -8,6 +8,8 @@
       <option name="INDENT_C_STRUCT_MEMBERS" value="2" />
       <option name="INDENT_VISIBILITY_KEYWORDS" value="2" />
       <option name="INDENT_INSIDE_CODE_BLOCK" value="2" />
+      <option name="SPACE_BEFORE_POINTER_IN_DECLARATION" value="false" />
+      <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
     </Objective-C>
     <codeStyleSettings language="CMake">
       <indentOptions>
