@@ -7,7 +7,7 @@ World::World() {
 
   Ess3D::TextureAtlas* atlas = Ess3D::TextureCache::getInstance()->getAtlas("textures/atlas.png", "textures/atlas.json");
 
-  _ball = std::make_shared<Ball>(
+  _ball = std::make_unique<Ball>(
     glm::vec2(0.f, 0.f),
     glm::vec2(1.f, 1.f),
     atlas->getTexture()->getId(),
@@ -21,7 +21,7 @@ World::World() {
   glm::vec2 ballDirection = glm::normalize(glm::vec2(distribution(randomGenerator), distribution(randomGenerator)));
   _ball->applyImpulse(ballDirection);
 
-  _paddleLeft = std::make_shared<Paddle>(
+  _paddleLeft = std::make_unique<Paddle>(
     //TODO FIX : HARDCODED - must be screen width dependent
     glm::vec2(-22.f, 0.f),
     glm::vec2(1.f, 8.f),
@@ -30,7 +30,7 @@ World::World() {
   );
   _paddleLeft->initializePhysicsBody(_b2World.get());
 
-  _paddleRight = std::make_shared<Paddle>(
+  _paddleRight = std::make_unique<Paddle>(
     //TODO FIX : HARDCODED - must be screen width dependent
     glm::vec2(22.f, 0.f),
     glm::vec2(1.f, 8.f),
@@ -42,9 +42,16 @@ World::World() {
   _paddleRight->setMoveDownKeyId(SDLK_k);
   _paddleRight->setMoveLeftKeyId(SDLK_j);
   _paddleRight->setMoveRightKeyId(SDLK_l);
+
+  _quadTree = std::make_unique<Ess3D::QuadTree>(glm::vec2(100.f, 100.f), 7, 1);
 }
 
 void World::render(Ess3D::Renderer2D *renderer) {
+  _quadTree = std::make_unique<Ess3D::QuadTree>(glm::vec2(100.f, 100.f), 7, 1);
+  _quadTree->insert(0, _ball->getBoundingBox());
+  _quadTree->insert(1, _paddleLeft->getBoundingBox());
+  _quadTree->insert(2, _paddleRight->getBoundingBox());
+
   _ball->render(renderer);
   _paddleLeft->render(renderer);
   _paddleRight->render(renderer);
@@ -84,7 +91,7 @@ b2World *World::getB2World() {
 }
 
 void World::initializeB2World() {
-  _b2World = std::make_shared<b2World>(b2Vec2(0, 0));
+  _b2World = std::make_unique<b2World>(b2Vec2(0, 0));
   _b2World->SetAutoClearForces(true);
   _b2World->SetDebugDraw(&_b2DebugRenderer);
   _b2DebugRenderer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
@@ -129,4 +136,8 @@ void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorde
 
 float World::getWidth() {
   return _width;
+}
+
+Ess3D::QuadTree* World::getQuadTree() {
+  return _quadTree.get();
 }

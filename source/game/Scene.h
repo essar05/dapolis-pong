@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <Ess3D/2d/Scene2D.h>
+#include <Ess3D/data/QuadTree.h>
+#include <Ess3D/2d/rendering/QuadTreeRenderer.h>
 #include "../models/Ball.h"
 #include "../models/Paddle.h"
 #include "World.h"
@@ -18,7 +20,8 @@ class Scene : public Ess3D::Scene2D {
     void onInput(Ess3D::InputManager *inputManager) override;
     void onRender(Ess3D::Renderer2D *renderer) override;
 
-    std::shared_ptr<World> _world;
+    std::unique_ptr<World> _world;
+    std::unique_ptr<Ess3D::QuadTreeRenderer> _quadTreeRenderer = nullptr;
 
 };
 
