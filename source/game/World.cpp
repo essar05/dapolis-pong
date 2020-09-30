@@ -5,7 +5,7 @@
 World::World() {
   this->initializeB2World();
 
-  Ess3D::TextureAtlas* atlas = Ess3D::TextureCache::getInstance()->getAtlas("textures/atlas.png", "textures/atlas.json");
+  Ess3D::TextureAtlas* atlas = Ess3D::TextureCache::getInstance()->getAtlas("textures/atlas.png","textures/atlas.json");
 
   _ball = std::make_unique<Ball>(
     glm::vec2(0.f, 0.f),
@@ -42,28 +42,32 @@ World::World() {
   _paddleRight->setMoveDownKeyId(SDLK_k);
   _paddleRight->setMoveLeftKeyId(SDLK_j);
   _paddleRight->setMoveRightKeyId(SDLK_l);
-
-  _quadTree = std::make_unique<Ess3D::QuadTree>(glm::vec2(100.f, 100.f), 7, 1);
 }
 
-void World::render(Ess3D::Renderer2D *renderer) {
+void World::render( Ess3D::Renderer2D* renderer ) {
   _quadTree = std::make_unique<Ess3D::QuadTree>(glm::vec2(100.f, 100.f), 7, 1);
-  _quadTree->insert(0, _ball->getBoundingBox());
+
+  Ess3D::BoundingBox ballBoundingBox = _ball->getBoundingBox();
+  _quadTree->insert(0, ballBoundingBox);
   _quadTree->insert(1, _paddleLeft->getBoundingBox());
   _quadTree->insert(2, _paddleRight->getBoundingBox());
+  _quadTree->insert(3, ballBoundingBox);
+  _quadTree->insert(4, ballBoundingBox);
+  _quadTree->insert(5, ballBoundingBox);
+  _quadTree->insert(6, ballBoundingBox);
 
   _ball->render(renderer);
   _paddleLeft->render(renderer);
   _paddleRight->render(renderer);
 }
 
-void World::input(Ess3D::InputManager *inputManager) {
+void World::input( Ess3D::InputManager* inputManager ) {
   _ball->input(inputManager);
   _paddleLeft->input(inputManager);
   _paddleRight->input(inputManager);
 }
 
-bool World::update(float deltaTime) {
+bool World::update( float deltaTime ) {
   _ball->update(deltaTime);
   _paddleLeft->update(deltaTime);
   _paddleRight->update(deltaTime);
@@ -74,19 +78,19 @@ bool World::update(float deltaTime) {
   return true;
 }
 
-Ball *World::getBall() {
+Ball* World::getBall() {
   return _ball.get();
 }
 
-Paddle *World::getPaddleLeft() {
+Paddle* World::getPaddleLeft() {
   return _paddleLeft.get();
 }
 
-Paddle *World::getPaddleRight() {
+Paddle* World::getPaddleRight() {
   return _paddleRight.get();
 }
 
-b2World *World::getB2World() {
+b2World* World::getB2World() {
   return _b2World.get();
 }
 
@@ -97,18 +101,18 @@ void World::initializeB2World() {
   _b2DebugRenderer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit);
 }
 
-void World::buildWorldBorders(const glm::vec2& worldSize) {
+void World::buildWorldBorders( const glm::vec2& worldSize ) {
   //TOP
   this->buildWorldBorder(glm::vec2(0.f, worldSize.y / 2), worldSize.x, WorldBorderOrientation::HORIZONTAL);
   //BOTTOM
-  this->buildWorldBorder(glm::vec2(0.f, - worldSize.y / 2), worldSize.x, WorldBorderOrientation::HORIZONTAL);
+  this->buildWorldBorder(glm::vec2(0.f, -worldSize.y / 2), worldSize.x, WorldBorderOrientation::HORIZONTAL);
   //LEFT
-  this->buildWorldBorder(glm::vec2(- worldSize.x / 2, 0.f), worldSize.y, WorldBorderOrientation::VERTICAL);
+  this->buildWorldBorder(glm::vec2(-worldSize.x / 2, 0.f), worldSize.y, WorldBorderOrientation::VERTICAL);
   //RIGHT
   this->buildWorldBorder(glm::vec2(worldSize.x / 2, 0.f), worldSize.y, WorldBorderOrientation::VERTICAL);
 }
 
-void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorderOrientation orientation) {
+void World::buildWorldBorder( const glm::vec2& position, float length, WorldBorderOrientation orientation ) {
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;
   bodyDef.position.Set(position.x, position.y);
@@ -117,13 +121,13 @@ void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorde
   b2Body* edge = _b2World->CreateBody(&bodyDef);
 
   b2Vec2 pointA = b2Vec2(
-    orientation == WorldBorderOrientation::HORIZONTAL ? - length / 2 : 0.f,
-    orientation == WorldBorderOrientation::VERTICAL ? - length / 2 : 0.f
-    );
+    orientation == WorldBorderOrientation::HORIZONTAL ? -length / 2 : 0.f,
+    orientation == WorldBorderOrientation::VERTICAL ? -length / 2 : 0.f
+  );
   b2Vec2 pointB = b2Vec2(
     orientation == WorldBorderOrientation::HORIZONTAL ? length / 2 : 0.f,
     orientation == WorldBorderOrientation::VERTICAL ? length / 2 : 0.f
-    );
+  );
 
   b2EdgeShape shape;
   shape.SetTwoSided(pointA, pointB);
