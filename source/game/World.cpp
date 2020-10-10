@@ -22,20 +22,20 @@ World::World() {
   _ball->applyImpulse(ballDirection);
 
   _paddleLeft = std::make_shared<Paddle>(
-    //TODO FIX : HARDCODED - must be screen width dependent
     glm::vec2(-22.f, 0.f),
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
-    atlas->getUV("new_paddle_orange")
+    atlas->getUV("new_paddle_orange"),
+    *this
   );
   _paddleLeft->initializePhysicsBody(_b2World.get());
 
   _paddleRight = std::make_shared<Paddle>(
-    //TODO FIX : HARDCODED - must be screen width dependent
     glm::vec2(22.f, 0.f),
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
-    atlas->getUV("new_paddle_blue")
+    atlas->getUV("new_paddle_blue"),
+    *this
   );
   _paddleRight->initializePhysicsBody(_b2World.get());
   _paddleRight->setMoveUpKeyId(SDLK_i);

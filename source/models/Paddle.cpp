@@ -1,10 +1,11 @@
 #include "Paddle.h"
+#include "./../game/World.h"
 #include <Ess3D/input/InputManager.h>
 #include <Ess3D/2d/utils/Utils2D.h>
 
 Paddle::Paddle() = default;
-Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv) :
-  Entity(position, size, textureId, uv) {}
+Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, const World &world) :
+  Entity(position, size, textureId, uv), _world(&world) {}
 
 Paddle::~Paddle() = default;
 
@@ -53,6 +54,14 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
   if (inputManager->isKeyDown(_moveRightKeyId)) {
       angle = -360; //this is used with SetAngularVelocity which changes over 1 second
   }
+  if (inputManager->isKeyDown(SDLK_F1)) {
+    this->setAiEnabled(!this->getAiEnabled());
+  }
+
+  if (this->getAiEnabled()) {
+    //this->getWorld()->getBall()->getPosition();
+    //if()
+  }
 
   this->setVelocity(direction * velocity);
   this->setAngleDegree(angle);
@@ -96,4 +105,14 @@ unsigned int Paddle::getMoveRightKeyId() const {
 
 void Paddle::setMoveRightKeyId(unsigned int moveRightKeyId) {
     _moveRightKeyId = moveRightKeyId;
+}
+
+bool Paddle::getAiEnabled()
+{
+  return _aiEnabled;
+}
+
+void Paddle::setAiEnabled(bool aiEnabled)
+{
+  _aiEnabled = aiEnabled;
 }
