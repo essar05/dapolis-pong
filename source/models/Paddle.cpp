@@ -67,17 +67,15 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
 
   //Handle AI controls - maybe not the best place - extract later into World?
   if (this->getAiEnabled()) {
-    glm::vec2 aiDirection{};
-    
-    //move paddle only if ball outside of paddle range(it's length)
-    aiDirection += this->getBody()->GetPosition().y < _world->getBall()->getBody()->GetPosition().y + _size.y / 2 
-      ? glm::vec2(0.0f, 1.0f)   //move down
-      : glm::vec2(0.0f, -1.0f); //move up
 
-    //move only the paddle towards the ball is directed to
-    if (this->hasId("paddle left") && _world->getBall()->getBody()->GetLinearVelocity().x < 0 ||
-        this->hasId("paddle right") && _world->getBall()->getBody()->GetLinearVelocity().x > 0) {
-      direction = aiDirection;
+    bool isBallGoingLeft = _world->getBall()->getBody()->GetLinearVelocity().x < 0;
+    bool isBallAbovePaddle = _world->getBall()->getBody()->GetPosition().y > (this->getBody()->GetPosition().y + (_size.y / 2));
+    bool isBallBelowPaddle = _world->getBall()->getBody()->GetPosition().y < (this->getBody()->GetPosition().y - (_size.y / 2));
+    bool isBallApproaching = (this->hasId("paddle left") && isBallGoingLeft) || (this->hasId("paddle right") && !isBallGoingLeft);
+
+    //move paddle only if ball outside of paddle range(it's length)
+    if (isBallApproaching && (isBallAbovePaddle || isBallBelowPaddle)) {
+      direction = glm::vec2(0.f, isBallAbovePaddle ? 1.0f : -1.0f);
     }
   }
 
