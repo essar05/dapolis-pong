@@ -13,7 +13,7 @@ class World;
 class Paddle : public Entity {
 public:
     Paddle();
-    Paddle(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, std::string name, const World& world);
+    Paddle(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, std::string id, const World& world);
     ~Paddle();
 
     void setVelocity(const glm::vec2& velocity);

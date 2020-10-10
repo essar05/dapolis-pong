@@ -10,7 +10,7 @@
 class Ball : public Entity {
   public:
     Ball();
-    Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string name);
+    Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string id);
     ~Ball();
 
     void applyImpulse(const glm::vec2& direction);

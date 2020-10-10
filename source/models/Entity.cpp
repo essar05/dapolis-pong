@@ -4,8 +4,8 @@
 
 Entity::Entity() = default;
 
-Entity::Entity(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string name) :
-  Object2D(position, size, textureId, uv), _name(name) {}
+Entity::Entity(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string id) :
+  Object2D(position, size, textureId, uv), _id(id) {}
 
 void Entity::interpolate(float timestepAccumulatorRatio) {
     float oneMinusRatio = 1.0f - timestepAccumulatorRatio;
@@ -33,10 +33,10 @@ b2Body* Entity::getBody() {
   return _body;
 }
 
-std::string Entity::getName() {
-  return _name;
+std::string Entity::getId() {
+  return _id;
 }
 
-bool Entity::hasName(std::string name) {
-  return _name == name;
+bool Entity::hasId(std::string id) {
+  return _id == id;
 }

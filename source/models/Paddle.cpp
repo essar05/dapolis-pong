@@ -54,14 +54,18 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
   if (inputManager->isKeyDown(_moveRightKeyId)) {
       angle = -360; //this is used with SetAngularVelocity which changes over 1 second
   }
-  if (inputManager->isKeyDown(SDLK_F1)) {
+  if (inputManager->isKeyDown(SDLK_F1) && this->hasId("paddle left")) {
     this->setAiEnabled(true);
   }
-  if (inputManager->isKeyDown(SDLK_F2)) {
+  if (inputManager->isKeyDown(SDLK_F2) && this->hasId("paddle right")) {
+    this->setAiEnabled(true);
+  }
+  if (inputManager->isKeyDown(SDLK_F8)) {
     this->setAiEnabled(false);
   }
 
-  //Treat AI controls - maybe not the best place - extract later into World?
+
+  //Handle AI controls - maybe not the best place - extract later into World?
   if (this->getAiEnabled()) {
     glm::vec2 aiDirection{};
     
@@ -71,8 +75,8 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
       : glm::vec2(0.0f, -1.0f); //move up
 
     //move only the paddle towards the ball is directed to
-    if (this->hasName("paddle left") && _world->getBall()->getBody()->GetLinearVelocity().x < 0 ||
-        this->hasName("paddle right") && _world->getBall()->getBody()->GetLinearVelocity().x > 0) {
+    if (this->hasId("paddle left") && _world->getBall()->getBody()->GetLinearVelocity().x < 0 ||
+        this->hasId("paddle right") && _world->getBall()->getBody()->GetLinearVelocity().x > 0) {
       direction = aiDirection;
     }
   }

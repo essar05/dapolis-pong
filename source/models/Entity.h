@@ -9,19 +9,19 @@
 class Entity : public Ess3D::Object2D {
   public:
     Entity();
-    Entity(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, std::string name);
+    Entity(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, std::string id);
 
     void interpolate(float timestepAccumulatorRatio) override;
     void resetInterpolation() override;
 
     b2Body* getBody();
-    std::string getName();
-    bool hasName(std::string name);
+    std::string getId();
+    bool hasId(std::string id);
 
     virtual void initializePhysicsBody(b2World* world);
 
   protected:
-    std::string _name;
+    std::string _id;
     b2Body* _body;
 
     virtual void initializeBody(b2World* world)= 0;
