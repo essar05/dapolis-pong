@@ -4,8 +4,8 @@
 
 Entity::Entity() = default;
 
-Entity::Entity(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv) :
-  Object2D(position, size, textureId, uv) {}
+Entity::Entity(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string name) :
+  Object2D(position, size, textureId, uv), _name(name) {}
 
 void Entity::interpolate(float timestepAccumulatorRatio) {
     float oneMinusRatio = 1.0f - timestepAccumulatorRatio;
@@ -26,4 +26,17 @@ void Entity::resetInterpolation() {
 void Entity::initializePhysicsBody(b2World *world) {
   this->initializeBody(world);
   this->initializeFixtures(world);
+}
+
+
+b2Body* Entity::getBody() {
+  return _body;
+}
+
+std::string Entity::getName() {
+  return _name;
+}
+
+bool Entity::hasName(std::string name) {
+  return _name == name;
 }

@@ -11,7 +11,8 @@ World::World() {
     glm::vec2(0.f, 0.f),
     glm::vec2(1.f, 1.f),
     atlas->getTexture()->getId(),
-    atlas->getUV("cluster_bomb")
+    atlas->getUV("cluster_bomb"),
+    "ball"
   );
   _ball->initializePhysicsBody(_b2World.get());
 
@@ -26,6 +27,7 @@ World::World() {
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
     atlas->getUV("new_paddle_orange"),
+    "paddle left",
     *this
   );
   _paddleLeft->initializePhysicsBody(_b2World.get());
@@ -35,6 +37,7 @@ World::World() {
     glm::vec2(1.f, 8.f),
     atlas->getTexture()->getId(),
     atlas->getUV("new_paddle_blue"),
+    "paddle right",
     *this
   );
   _paddleRight->initializePhysicsBody(_b2World.get());
@@ -67,7 +70,7 @@ bool World::update(float deltaTime) {
   return true;
 }
 
-Ball *World::getBall() {
+Ball *World::getBall() const {
   return _ball.get();
 }
 
@@ -127,6 +130,6 @@ void World::buildWorldBorder(const glm::vec2& position, float length, WorldBorde
   edge->CreateFixture(&definition);
 }
 
-float World::getWidth() {
+float World::getWidth() const {
   return _width;
 }

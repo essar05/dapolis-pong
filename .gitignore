@@ -5,3 +5,4 @@ out
 *.log
 vs-dapong.*
 Debug/dapolis-pong.vcxprojAssemblyReference.cache
+x64/Debug/*

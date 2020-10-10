@@ -4,8 +4,8 @@
 #include <Ess3D/2d/utils/Utils2D.h>
 
 Paddle::Paddle() = default;
-Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, const World &world) :
-  Entity(position, size, textureId, uv), _world(&world) {}
+Paddle::Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string name, const World &world) :
+  Entity(position, size, textureId, uv, name), _world(&world) {}
 
 Paddle::~Paddle() = default;
 
@@ -55,12 +55,26 @@ void Paddle::onInput(Ess3D::InputManager *inputManager) {
       angle = -360; //this is used with SetAngularVelocity which changes over 1 second
   }
   if (inputManager->isKeyDown(SDLK_F1)) {
-    this->setAiEnabled(!this->getAiEnabled());
+    this->setAiEnabled(true);
+  }
+  if (inputManager->isKeyDown(SDLK_F2)) {
+    this->setAiEnabled(false);
   }
 
+  //Treat AI controls - maybe not the best place - extract later into World?
   if (this->getAiEnabled()) {
-    //this->getWorld()->getBall()->getPosition();
-    //if()
+    glm::vec2 aiDirection{};
+    
+    //move paddle only if ball outside of paddle range(it's length)
+    aiDirection += this->getBody()->GetPosition().y < _world->getBall()->getBody()->GetPosition().y + _size.y / 2 
+      ? glm::vec2(0.0f, 1.0f)   //move down
+      : glm::vec2(0.0f, -1.0f); //move up
+
+    //move only the paddle towards the ball is directed to
+    if (this->hasName("paddle left") && _world->getBall()->getBody()->GetLinearVelocity().x < 0 ||
+        this->hasName("paddle right") && _world->getBall()->getBody()->GetLinearVelocity().x > 0) {
+      direction = aiDirection;
+    }
   }
 
   this->setVelocity(direction * velocity);
@@ -107,12 +121,10 @@ void Paddle::setMoveRightKeyId(unsigned int moveRightKeyId) {
     _moveRightKeyId = moveRightKeyId;
 }
 
-bool Paddle::getAiEnabled()
-{
+bool Paddle::getAiEnabled() {
   return _aiEnabled;
 }
 
-void Paddle::setAiEnabled(bool aiEnabled)
-{
+void Paddle::setAiEnabled(bool aiEnabled) {
   _aiEnabled = aiEnabled;
 }

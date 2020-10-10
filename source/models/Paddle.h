@@ -6,12 +6,14 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_keycode.h>
 #include "Entity.h"
-#include "./../game/World.h"
+#include <string>
+
+class World;
 
 class Paddle : public Entity {
 public:
     Paddle();
-    Paddle(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, const World& world);
+    Paddle(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv, std::string name, const World& world);
     ~Paddle();
 
     void setVelocity(const glm::vec2& velocity);
@@ -41,7 +43,7 @@ public:
 
     glm::vec2 _velocity;
     float _angleDegree;
-    bool _aiEnabled;
+    bool _aiEnabled = false;
     const World* _world;
 
     unsigned int _moveUpKeyId = SDLK_w;

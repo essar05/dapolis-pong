@@ -5,11 +5,12 @@
 #include <glm/vec4.hpp>
 #include <GL/glew.h>
 #include "Entity.h"
+#include <string>
 
 class Ball : public Entity {
   public:
     Ball();
-    Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv);
+    Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv, std::string name);
     ~Ball();
 
     void applyImpulse(const glm::vec2& direction);

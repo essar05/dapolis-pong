@@ -25,11 +25,11 @@ class World : public Ess3D::IUpdatable, public Ess3D::IHandlesInput, public Ess3
 
     b2World* getB2World();
 
-    Ball* getBall();
+    Ball* getBall() const;
     Paddle* getPaddleLeft();
     Paddle* getPaddleRight();
 
-    float getWidth();
+    float getWidth() const;
 
     void buildWorldBorders(const glm::vec2& worldSize);
 
