@@ -66,6 +66,17 @@ void GameplayScreen::render() {
 
 void GameplayScreen::onSDLEvent(SDL_Event &event) {
   _gui.onSDLEvent(event);
+
+  if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F3) {
+    Ess3D::Config* config = Ess3D::Config::get();
+    if (config->isInterpolationEnabled()) {
+      printf("Disabling interpolation \n");
+      Ess3D::Config::get()->disableInterpolation();
+    } else {
+      printf("Enabling interpolation \n");
+      Ess3D::Config::get()->enableInterpolation();
+    }
+  }
 }
 
 void GameplayScreen::initGUI() {

@@ -4,7 +4,7 @@
 
 Ball::Ball() = default;
 Ball::Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv) :
-  Entity(position, size, textureId, uv) {}
+  Entity2D(position, size, textureId, uv) {}
 
 Ball::~Ball() = default;
 

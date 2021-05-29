@@ -1,20 +1,23 @@
 #ifndef DAPOLIS_PONG_PADDLE_H
 #define DAPOLIS_PONG_PADDLE_H
 
+#include <Ess3D/2d/models/Entity2D.h>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <GL/glew.h>
 #include <SDL2/SDL_keycode.h>
-#include "Entity.h"
 
-class Paddle : public Entity {
-public:
+class Paddle : public Ess3D::Entity2D {
+  public:
     Paddle();
-    Paddle(const glm::vec2& position, const glm::vec2& size, GLuint textureId, const glm::vec4& uv);
+    Paddle(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv);
+
     ~Paddle();
 
-    void setVelocity(const glm::vec2& velocity);
-    void setAngleDegree(float angleDegree);
+    void setVelocity(const glm::vec2 &velocity);
+
+    float getAngularVelocity() const;
+    void setAngularVelocity(float angleDegree);
 
     unsigned int getMoveUpKeyId() const;
     void setMoveUpKeyId(unsigned int moveUpKeyId);
@@ -36,7 +39,7 @@ public:
     void initializeFixtures(b2World *world) override;
 
     glm::vec2 _velocity;
-    float _angleDegree;
+    float _angularVelocity;
 
     unsigned int _moveUpKeyId = SDLK_w;
     unsigned int _moveDownKeyId = SDLK_s;

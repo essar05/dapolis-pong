@@ -9,7 +9,6 @@ SET(ALL_FILES
     Game.cpp Game.h
     screens/GameplayScreen.cpp screens/GameplayScreen.h
     models/Ball.cpp models/Ball.h
-    models/Entity.cpp models/Entity.h
     models/Paddle.cpp models/Paddle.h
     game/World.cpp game/World.h
     game/Scene.cpp game/Scene.h

@@ -4,9 +4,9 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <GL/glew.h>
-#include "Entity.h"
+#include <Ess3D/2d/models/Entity2D.h>
 
-class Ball : public Entity {
+class Ball : public Ess3D::Entity2D {
   public:
     Ball();
     Ball(const glm::vec2 &position, const glm::vec2 &size, GLuint textureId, const glm::vec4 &uv);

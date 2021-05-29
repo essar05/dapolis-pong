@@ -4,7 +4,10 @@
 #include "Scene.h"
 
 Scene::Scene() {
-  _world = std::make_shared<World>();
+  _world = std::make_unique<World>();
+
+  _quadTreeRenderer = std::make_unique<Ess3D::QuadTreeRenderer>();
+
   // set the camera to view the entire world's width
   _camera->setWidth(_world->getWidth());
 
@@ -52,4 +55,5 @@ void Scene::onRender(Ess3D::Renderer2D *renderer) {
 
   renderer->disableTexture();
   _world->getB2World()->DebugDraw();
+  _quadTreeRenderer->renderTree(*renderer, *_world->getQuadTree());
 }
